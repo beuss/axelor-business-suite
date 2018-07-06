@@ -543,7 +543,7 @@
 	</action-view>
 
   	<action-validate name="action-purchase-order-validate-stock-location">
-   		<error message="The field 'Stock Location' must be filled." if="stockLocation == null"/>
+  	  	<error message="The field 'Stock Location' must be filled." if="stockLocation == null &amp;&amp;__config__.app.isApp('supplychain')"/>
 	</action-validate>
 
 	<action-validate name="action-purchase-order-validate-information">
