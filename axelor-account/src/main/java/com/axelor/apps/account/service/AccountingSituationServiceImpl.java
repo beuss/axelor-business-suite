@@ -38,11 +38,13 @@ import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.i18n.I18n;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Singleton
 public class AccountingSituationServiceImpl implements AccountingSituationService {
 
   protected AccountConfigService accountConfigService;
