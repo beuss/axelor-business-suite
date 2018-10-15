@@ -77,10 +77,11 @@ public class PeriodServiceImpl implements PeriodService {
     return periodRepo
         .all()
         .filter(
-        "self.year.company = ?1 and self.fromDate <= ?2 and self.toDate >= ?2 and self.year.typeSelect = ?3",
-        company,
-        date,
-        typeSelect)
+            "self.year.company = ?1 and self.fromDate <= ?2 and self.toDate >= ?2 and self.year.typeSelect = ?3",
+            company,
+            date,
+            typeSelect)
+        .fetchOne();
   }
 
   public Period getNextPeriod(Period period) throws AxelorException {
