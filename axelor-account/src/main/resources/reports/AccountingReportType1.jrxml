@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ledger" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="ledger" whenResourceMissingType="Key" uuid="f0de5902-4c99-4b7a-bd3a-f08237ea3c64">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="282"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="713"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Axelor dev"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<subDataset name="AccountingReportDS" uuid="40f7dfdc-d73c-4b62-b7b4-400ef44020b6">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Axelor dev"/>
+		<parameter name="ACCOUNTING_REPORT_ID" class="java.lang.Long"/>
+		<queryString>
+			<![CDATA[select Company.name as company_name, AccountingReport.date_from, AccountingReport.date_to, AccountingReport.date_val as report_date,
+AccountingReport.publication_date_time as report_date_edition, MetaFile.file_path as logo_path,
+Period.name as period_name, Journal.name as journal_name, AccountingReport.global, AccountingReport.global_by_date,
+PaymentMode.name as payment_mode, Currency.name as currency_name
+from public.account_accounting_report as AccountingReport
+inner join public.base_company as Company on (AccountingReport.company = Company.id)
+inner join base_currency as Currency on (Company.currency = Currency.id)
+left outer join meta_file as MetaFile on (MetaFile.id = Company.logo)
+left outer join public.account_payment_mode as PaymentMode on (AccountingReport.payment_mode = PaymentMode.id)
+left outer join public.account_journal as Journal on (AccountingReport.journal = Journal.id)
+left outer join public.base_period as Period on (AccountingReport.period = Period.id)
+where AccountingReport.id = $P{ACCOUNTING_REPORT_ID}]]>
+		</queryString>
+		<field name="company_name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="company_name"/>
+		</field>
+		<field name="date_from" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.label" value="date_from"/>
+		</field>
+		<field name="date_to" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.label" value="date_to"/>
+		</field>
+		<field name="report_date" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.label" value="report_date"/>
+		</field>
+		<field name="report_date_edition" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.label" value="report_date_edition"/>
+		</field>
+		<field name="logo_path" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="logo_path"/>
+		</field>
+		<field name="period_name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="period_name"/>
+		</field>
+		<field name="journal_name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="journal_name"/>
+		</field>
+		<field name="global" class="java.lang.Boolean">
+			<property name="com.jaspersoft.studio.field.label" value="global"/>
+		</field>
+		<field name="global_by_date" class="java.lang.Boolean">
+			<property name="com.jaspersoft.studio.field.label" value="global_by_date"/>
+		</field>
+		<field name="payment_mode" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="payment_mode"/>
+		</field>
+		<field name="currency_name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="currency_name"/>
+		</field>
+	</subDataset>
+	<parameter name="ACCOUNTING_REPORT" class="com.axelor.apps.account.db.AccountingReport" isForPrompting="false"/>
+	<parameter name="ACCOUNTING_REPORT_ID" class="java.lang.Long"/>
+	<parameter name="COMPANY" class="com.axelor.apps.base.db.Company"/>
+	<parameter name="ATTACHMENT_PATH" class="java.lang.String">
+		<parameterDescription><![CDATA[Path to the upload directory]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select DISTINCT MoveLine.id as moveLine_id, MoveLine.name as move_line_name, MoveLine.description as move_line_description,
+MoveLine.date_val, MoveLine.partner_full_name as partner,
+CONCAT(MoveLine.account_code, ' ', MoveLine.account_name) as account,
+MoveLine.debit, MoveLine.credit , Invoice.invoice_id as invoice_reference,
+Journal.code as journal_code,
+CASE
+WHEN ParentAccount10.id IS NOT NULL AND ParentAccount9.id IS NOT NULL THEN ParentAccount8.code
+WHEN ParentAccount9.id IS NOT NULL AND ParentAccount8.id IS NOT NULL THEN ParentAccount7.code
+WHEN ParentAccount8.id IS NOT NULL AND ParentAccount7.id IS NOT NULL THEN ParentAccount6.code
+WHEN ParentAccount7.id IS NOT NULL AND ParentAccount6.id IS NOT NULL THEN ParentAccount5.code
+WHEN ParentAccount6.id IS NOT NULL AND ParentAccount5.id IS NOT NULL THEN ParentAccount4.code
+WHEN ParentAccount5.id IS NOT NULL AND ParentAccount4.id IS NOT NULL THEN ParentAccount3.code
+WHEN ParentAccount4.id IS NOT NULL AND ParentAccount3.id IS NOT NULL THEN ParentAccount2.code
+WHEN ParentAccount3.id IS NOT NULL AND ParentAccount2.id IS NOT NULL THEN ParentAccount.code
+ELSE NULL
+END as first_level_account_code,
+CASE
+WHEN ParentAccount10.id IS NOT NULL AND ParentAccount9.id IS NOT NULL THEN ParentAccount8.name
+WHEN ParentAccount9.id IS NOT NULL AND ParentAccount8.id IS NOT NULL THEN ParentAccount7.name
+WHEN ParentAccount8.id IS NOT NULL AND ParentAccount7.id IS NOT NULL THEN ParentAccount6.name
+WHEN ParentAccount7.id IS NOT NULL AND ParentAccount6.id IS NOT NULL THEN ParentAccount5.name
+WHEN ParentAccount6.id IS NOT NULL AND ParentAccount5.id IS NOT NULL THEN ParentAccount4.name
+WHEN ParentAccount5.id IS NOT NULL AND ParentAccount4.id IS NOT NULL THEN ParentAccount3.name
+WHEN ParentAccount4.id IS NOT NULL AND ParentAccount3.id IS NOT NULL THEN ParentAccount2.name
+WHEN ParentAccount3.id IS NOT NULL AND ParentAccount2.id IS NOT NULL THEN ParentAccount.name
+ELSE NULL
+END as first_level_account_name,
+CASE
+WHEN ParentAccount10.id IS NOT NULL AND ParentAccount9.id IS NOT NULL AND ParentAccount8.id IS NOT NULL THEN ParentAccount7.name
+WHEN ParentAccount9.id IS NOT NULL AND ParentAccount8.id IS NOT NULL AND ParentAccount7.id IS NOT NULL THEN ParentAccount6.name
+WHEN ParentAccount8.id IS NOT NULL AND ParentAccount7.id IS NOT NULL AND ParentAccount6.id IS NOT NULL THEN ParentAccount5.name
+WHEN ParentAccount7.id IS NOT NULL AND ParentAccount6.id IS NOT NULL AND ParentAccount5.id IS NOT NULL THEN ParentAccount4.name
+WHEN ParentAccount6.id IS NOT NULL AND ParentAccount5.id IS NOT NULL AND ParentAccount4.id IS NOT NULL THEN ParentAccount3.name
+WHEN ParentAccount5.id IS NOT NULL AND ParentAccount4.id IS NOT NULL AND ParentAccount3.id IS NOT NULL THEN ParentAccount2.name
+WHEN ParentAccount4.id IS NOT NULL AND ParentAccount3.id IS NOT NULL AND ParentAccount2.id IS NOT NULL THEN ParentAccount.name
+ELSE NULL
+END as second_level_account_name,
+CASE
+WHEN ParentAccount10.id IS NOT NULL AND ParentAccount9.id IS NOT NULL AND ParentAccount8.id IS NOT NULL THEN ParentAccount7.code
+WHEN ParentAccount9.id IS NOT NULL AND ParentAccount8.id IS NOT NULL AND ParentAccount7.id IS NOT NULL THEN ParentAccount6.code
+WHEN ParentAccount8.id IS NOT NULL AND ParentAccount7.id IS NOT NULL AND ParentAccount6.id IS NOT NULL THEN ParentAccount5.code
+WHEN ParentAccount7.id IS NOT NULL AND ParentAccount6.id IS NOT NULL AND ParentAccount5.id IS NOT NULL THEN ParentAccount4.code
+WHEN ParentAccount6.id IS NOT NULL AND ParentAccount5.id IS NOT NULL AND ParentAccount4.id IS NOT NULL THEN ParentAccount3.code
+WHEN ParentAccount5.id IS NOT NULL AND ParentAccount4.id IS NOT NULL AND ParentAccount3.id IS NOT NULL THEN ParentAccount2.code
+WHEN ParentAccount4.id IS NOT NULL AND ParentAccount3.id IS NOT NULL AND ParentAccount2.id IS NOT NULL THEN ParentAccount.code
+ELSE NULL
+END as second_level_account_code
+
+from public.account_accounting_report as AccountingReport
+left outer join public.account_move_line as MoveLine on (AccountingReport.id =  $P{ACCOUNTING_REPORT_ID} )
+left outer join public.account_move as Move on (MoveLine.move = Move.id  AND Move.ignore_in_accounting_ok = false) 
+left outer join public.account_invoice as Invoice on (Invoice.id = Move.invoice)
+
+left outer join public.account_account as Account on (MoveLine.account  = Account.id )
+left outer join public.account_account as ParentAccount on (Account.parent_account  = ParentAccount.id )
+left outer join public.account_account as ParentAccount2 on (ParentAccount.parent_account  = ParentAccount2.id )
+left outer join public.account_account as ParentAccount3 on (ParentAccount2.parent_account  = ParentAccount3.id )
+left outer join public.account_account as ParentAccount4 on (ParentAccount3.parent_account  = ParentAccount4.id )
+left outer join public.account_account as ParentAccount5 on (ParentAccount4.parent_account  = ParentAccount5.id )
+left outer join public.account_account as ParentAccount6 on (ParentAccount5.parent_account  = ParentAccount6.id )
+left outer join public.account_account as ParentAccount7 on (ParentAccount6.parent_account  = ParentAccount7.id )
+left outer join public.account_account as ParentAccount8 on (ParentAccount7.parent_account  = ParentAccount8.id )
+left outer join public.account_account as ParentAccount9 on (ParentAccount8.parent_account  = ParentAccount9.id )
+left outer join public.account_account as ParentAccount10 on (ParentAccount9.parent_account  = ParentAccount10.id )
+
+left outer join public.account_accounting_report_account_set as AccountSet on (AccountSet.account_accounting_report = AccountingReport.id)
+left outer join public.account_accounting_report_partner_set as PartnerSet on (PartnerSet.account_accounting_report = AccountingReport.id)
+
+left outer join public.base_company as Company on (AccountingReport.company = Company.id)
+left outer join public.account_account_config as AccountConfig on (AccountConfig.company = Company.id)
+left outer join public.base_period as Period on (Move.period = Period.id) 
+left outer join public.account_journal as Journal on (Move.journal = Journal.id) 
+where 
+(AccountingReport.date_from IS NULL OR MoveLine.date_val >= AccountingReport.date_from) AND
+(AccountingReport.date_to IS NULL OR MoveLine.date_val <= AccountingReport.date_to) AND
+MoveLine.date_val <= AccountingReport.date_val AND
+Move.company = AccountingReport.company AND
+(AccountSet.account_set IS NULL OR AccountSet.account_set = Account.id or AccountSet.account_set = ParentAccount.id 
+    or AccountSet.account_set = ParentAccount2.id or AccountSet.account_set = ParentAccount3.id
+    or AccountSet.account_set = ParentAccount4.id or AccountSet.account_set = ParentAccount5.id 
+    or AccountSet.account_set = ParentAccount6.id or AccountSet.account_set = ParentAccount6.parent_account) AND(PartnerSet.partner_set IS NULL OR PartnerSet.partner_set = MoveLine.partner) AND
+(AccountingReport.period IS NULL OR AccountingReport.period  = Move.period) AND
+(AccountingReport.journal IS NULL OR AccountingReport.journal  = Move.journal) AND
+(AccountingReport.payment_mode IS  NULL OR (AccountingReport.payment_mode = Move.payment_mode)) AND
+Move.ignore_in_accounting_ok = false AND (Move.status_select = 3 OR (Move.status_select = 2 AND AccountConfig.accounting_daybook = true))
+
+order by first_level_account_code, second_level_account_code, account, MoveLine.date_val, MoveLine.name]]>
+	</queryString>
+	<field name="moveline_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="moveline_id"/>
+	</field>
+	<field name="move_line_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="move_line_name"/>
+	</field>
+	<field name="move_line_description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="move_line_description"/>
+	</field>
+	<field name="date_val" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="date_val"/>
+	</field>
+	<field name="partner" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="partner"/>
+	</field>
+	<field name="account" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="account"/>
+	</field>
+	<field name="debit" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="debit"/>
+	</field>
+	<field name="credit" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="credit"/>
+	</field>
+	<field name="invoice_reference" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="invoice_reference"/>
+	</field>
+	<field name="journal_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="journal_code"/>
+	</field>
+	<field name="first_level_account_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="first_level_account_code"/>
+	</field>
+	<field name="first_level_account_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="first_level_account_name"/>
+	</field>
+	<field name="second_level_account_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="second_level_account_name"/>
+	</field>
+	<field name="second_level_account_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="second_level_account_code"/>
+	</field>
+	<variable name="account_debit_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="account" calculation="Sum">
+		<variableExpression><![CDATA[$F{debit}]]></variableExpression>
+	</variable>
+	<variable name="account_credit_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="account" calculation="Sum">
+		<variableExpression><![CDATA[$F{credit}]]></variableExpression>
+	</variable>
+	<variable name="first_level_debit_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="first_level_account" calculation="Sum">
+		<variableExpression><![CDATA[$F{debit}]]></variableExpression>
+	</variable>
+	<variable name="first_level_credit_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="first_level_account" calculation="Sum">
+		<variableExpression><![CDATA[$F{credit}]]></variableExpression>
+	</variable>
+	<variable name="second_level_debit_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="second_level_account" calculation="Sum">
+		<variableExpression><![CDATA[$F{debit}]]></variableExpression>
+	</variable>
+	<variable name="second_level_credit_sum" class="java.math.BigDecimal" resetType="Group" resetGroup="second_level_account" calculation="Sum">
+		<variableExpression><![CDATA[$F{credit}]]></variableExpression>
+	</variable>
+	<variable name="primary_foreground_color" class="java.lang.String" resetType="None">
+		<variableExpression><![CDATA[$P{COMPANY} == null || $P{COMPANY}.getPrintingSettings() == null || $P{COMPANY}.getPrintingSettings().getPrimaryForegroundColor() == null ? "#333333" : $P{COMPANY}.getPrintingSettings().getPrimaryForegroundColor()]]></variableExpression>
+	</variable>
+	<variable name="secondary_foreground_color" class="java.lang.String">
+		<variableExpression><![CDATA[$P{COMPANY} == null || $P{COMPANY}.getPrintingSettings() == null || $P{COMPANY}.getPrintingSettings().getSecondaryForegroundColor() == null ? "#333333" : $P{COMPANY}.getPrintingSettings().getSecondaryForegroundColor()]]></variableExpression>
+	</variable>
+	<variable name="primary_background_color" class="java.lang.String" resetType="None">
+		<variableExpression><![CDATA[$P{COMPANY} == null || $P{COMPANY}.getPrintingSettings() == null || $P{COMPANY}.getPrintingSettings().getPrimaryBackgroundColor() == null ? "#86bc25" : $P{COMPANY}.getPrintingSettings().getPrimaryBackgroundColor()]]></variableExpression>
+	</variable>
+	<variable name="secondary_background_color" class="java.lang.String" resetType="None">
+		<variableExpression><![CDATA[$P{COMPANY} == null || $P{COMPANY}.getPrintingSettings() == null || $P{COMPANY}.getPrintingSettings().getSecondaryBackgroundColor() == null ? "#f3f3f3" : $P{COMPANY}.getPrintingSettings().getSecondaryBackgroundColor()]]></variableExpression>
+	</variable>
+	<variable name="short_date_formatter" class="java.time.format.DateTimeFormatter" resetType="None">
+		<variableExpression><![CDATA[java.time.format.DateTimeFormatter.ofLocalizedDate(java.time.format.FormatStyle.SHORT).withLocale($P{REPORT_LOCALE})]]></variableExpression>
+	</variable>
+	<variable name="short_datetime_formatter" class="java.time.format.DateTimeFormatter" resetType="None">
+		<variableExpression><![CDATA[java.time.format.DateTimeFormatter.ofLocalizedDateTime(java.time.format.FormatStyle.SHORT).withLocale($P{REPORT_LOCALE})]]></variableExpression>
+	</variable>
+	<group name="first_level_account">
+		<groupExpression><![CDATA[$F{first_level_account_name}]]></groupExpression>
+		<groupFooter>
+			<band height="22">
+				<textField>
+					<reportElement mode="Opaque" x="0" y="0" width="532" height="20" uuid="dc030c3e-c3b7-4148-ac97-270d4fcd6510">
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$V{secondary_background_color}]]></propertyExpression>
+						<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{secondary_foreground_color}]]></propertyExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[msg($R{account.ledger.account_total}, $F{first_level_account_code}, $F{first_level_account_name})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement mode="Opaque" x="532" y="0" width="90" height="20" uuid="4890109f-ffa0-472e-bad6-c658ceb7bbfc">
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$V{secondary_background_color}]]></propertyExpression>
+						<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{secondary_foreground_color}]]></propertyExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{first_level_debit_sum}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement mode="Opaque" x="622" y="0" width="90" height="20" uuid="836ce205-cefb-4806-b9ae-6fac3f5a3f4a">
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$V{secondary_background_color}]]></propertyExpression>
+						<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{secondary_foreground_color}]]></propertyExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{first_level_credit_sum}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement mode="Opaque" x="712" y="0" width="90" height="20" uuid="14dec952-922f-4618-b7be-e0f3986dd54e">
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$V{secondary_background_color}]]></propertyExpression>
+						<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{secondary_foreground_color}]]></propertyExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{first_level_debit_sum}.subtract($V{first_level_credit_sum})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="second_level_account">
+		<groupExpression><![CDATA[$F{second_level_account_name}]]></groupExpression>
+		<groupFooter>
+			<band height="22">
+				<textField>
+					<reportElement mode="Opaque" x="0" y="0" width="532" height="20" uuid="dc030c3e-c3b7-4148-ac97-270d4fcd6510">
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$V{secondary_background_color}]]></propertyExpression>
+						<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{secondary_foreground_color}]]></propertyExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="11" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[msg($R{account.ledger.account_total}, $F{second_level_account_code}, $F{second_level_account_name})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement mode="Opaque" x="532" y="0" width="90" height="20" uuid="cc6a6b7f-8f1b-4feb-8f3f-29452c8de332">
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$V{secondary_background_color}]]></propertyExpression>
+						<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{secondary_foreground_color}]]></propertyExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{second_level_debit_sum}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement mode="Opaque" x="622" y="0" width="90" height="20" uuid="8413d028-ac62-45b5-8e9e-654ccfc9a45f">
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$V{secondary_background_color}]]></propertyExpression>
+						<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{secondary_foreground_color}]]></propertyExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{second_level_credit_sum}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement mode="Opaque" x="712" y="0" width="90" height="20" uuid="16ccd1e9-f039-45fb-86a9-a8184bc5e4f9">
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$V{secondary_background_color}]]></propertyExpression>
+						<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{secondary_foreground_color}]]></propertyExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{second_level_debit_sum}.subtract($V{second_level_credit_sum})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="account" isReprintHeaderOnEachPage="true" preventOrphanFooter="true">
+		<groupExpression><![CDATA[$F{account}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement mode="Opaque" x="0" y="0" width="802" height="20" uuid="cff58637-6fea-4b64-95e2-621aa2f82e99">
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$V{primary_background_color}]]></propertyExpression>
+						<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{primary_foreground_color}]]></propertyExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{account} + ($V{account_COUNT} == 0 ? "" : $R{account.ledger.continued})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="15">
+				<textField pattern="#,##0.00#">
+					<reportElement x="532" y="0" width="90" height="15" uuid="750b9b93-f410-4876-8748-8adef08bbd5b"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{account_debit_sum}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="622" y="0" width="90" height="15" uuid="23113d53-5648-4552-92b9-6b657b2f15ad"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{account_credit_sum}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="712" y="0" width="90" height="15" uuid="6a21a968-cc71-4cf5-810e-a2d5c6b68292"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{account_debit_sum}.subtract($V{account_credit_sum})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="0" width="532" height="15" uuid="9e024ca4-77b6-41f5-a5a1-4f5b76ce73f4"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{account.ledger.total}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="74" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="31" width="802" height="20" isRemoveLineWhenBlank="true" printWhenGroupChanges="account" uuid="fac342e2-bc31-4202-bdcc-3ff640d80322">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{account.ledger.title}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="120" height="30" uuid="2297fffe-e2b6-4d90-985d-5ff9806dd6e0"/>
+				<imageExpression><![CDATA[$P{ATTACHMENT_PATH} + "/" + $P{COMPANY}.getLogo().getFilePath()]]></imageExpression>
+			</image>
+			<line>
+				<reportElement positionType="Float" x="0" y="30" width="802" height="1" uuid="b9b280fc-f978-40fb-9af5-980bf15c1a16">
+					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{primary_background_color}]]></propertyExpression>
+				</reportElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="0" width="552" height="30" uuid="e49f5dc4-aea7-42c1-af0f-50ce6316e478"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMPANY}.getName()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="241" y="54" width="320" height="20" uuid="7473a587-95bf-4231-ba74-96e0d22f4562"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ACCOUNTING_REPORT}.getDateFrom() != null && $P{ACCOUNTING_REPORT}.getDateTo() != null ?
+msg($R{account.ledger.period}, $V{short_date_formatter}.format($P{ACCOUNTING_REPORT}.getDateFrom()), $V{short_date_formatter}.format($P{ACCOUNTING_REPORT}.getDateTo())) :
+($P{ACCOUNTING_REPORT}.getDateFrom() != null ? msg($R{account.ledger.from}, $V{short_date_formatter}.format($P{ACCOUNTING_REPORT}.getDateFrom())) :
+($P{ACCOUNTING_REPORT}.getDateTo() != null ? msg($R{account.ledger.to}, $V{short_date_formatter}.format($P{ACCOUNTING_REPORT}.getDateTo())) : ""))]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="640" y="51" width="162" height="23" uuid="163543e4-4a81-467e-a649-9b427f4a3790"/>
+				<textFieldExpression><![CDATA[msg($R{account.ledger.accounting_currency}, $P{COMPANY}.getCurrency().getName())]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement mode="Transparent" x="0" y="3" width="70" height="30" uuid="bd0c6cbc-6396-4ec4-8e13-7b756683e272">
+					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{primary_foreground_color}]]></propertyExpression>
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[]]></propertyExpression>
+				</reportElement>
+				<box bottomPadding="2"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{account.ledger.date_title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="3" width="110" height="30" uuid="e023fe91-a83d-49d5-92aa-052617860b67">
+					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{primary_foreground_color}]]></propertyExpression>
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[]]></propertyExpression>
+				</reportElement>
+				<box bottomPadding="2"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{account.ledger.document_reference_title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="3" width="50" height="30" uuid="f1156e24-4c4a-41b4-ae6f-bf7ab3dea9bc">
+					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{primary_foreground_color}]]></propertyExpression>
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[]]></propertyExpression>
+				</reportElement>
+				<box bottomPadding="2"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{account.ledger.journal_title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="3" width="302" height="30" uuid="9c61e886-3a9b-4878-8145-5c4b11e98c04">
+					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{primary_foreground_color}]]></propertyExpression>
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[]]></propertyExpression>
+				</reportElement>
+				<box bottomPadding="2"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{account.ledger.move_line_description_title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="532" y="3" width="90" height="30" uuid="cb4cb68a-1ef2-4683-99b9-3022819fb8f7">
+					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{primary_foreground_color}]]></propertyExpression>
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[]]></propertyExpression>
+				</reportElement>
+				<box bottomPadding="2"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{account.ledger.debit_title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="622" y="3" width="90" height="30" uuid="6d3b4192-aa04-46df-a8c2-45fdcfd4196a">
+					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{primary_foreground_color}]]></propertyExpression>
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[]]></propertyExpression>
+				</reportElement>
+				<box bottomPadding="2"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{account.ledger.credit_title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="712" y="3" width="90" height="30" uuid="a6575b28-b673-4a07-9c73-67364d6f9da8">
+					<propertyExpression name="net.sf.jasperreports.style.forecolor"><![CDATA[$V{primary_foreground_color}]]></propertyExpression>
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[]]></propertyExpression>
+				</reportElement>
+				<box bottomPadding="2"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{account.ledger.balance_title}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="70" height="14" uuid="d790acb7-3612-4cca-93a5-f5e8a130654f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1b8623d9-6784-40d5-a89a-6042cd9d168e"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[DateFormat.getDateInstance(DateFormat.SHORT, $P{REPORT_LOCALE}).format($F{date_val})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="70" y="0" width="110" height="14" uuid="88209fdf-fbb5-4a94-bbcd-2483a1e3a0a8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="34a5c62a-2792-4fa1-9675-70113d2dfb68"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{invoice_reference}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="180" y="0" width="50" height="14" uuid="fb8c1ca4-6e23-4fe2-8d4b-eac911c6c8cc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="34a5c62a-2792-4fa1-9675-70113d2dfb68"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{journal_code}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="230" y="0" width="302" height="14" uuid="978121d0-a03f-46f2-bb33-f3fa951101d4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="34a5c62a-2792-4fa1-9675-70113d2dfb68"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{move_line_description}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="532" y="0" width="90" height="14" uuid="b5c8c66a-a879-4862-b0ff-f2ca6f29884a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c702654b-63db-49fc-8e16-03e1f80bf7ff"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{debit}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="622" y="0" width="90" height="14" uuid="dd7204fd-a101-46ed-a589-7749d52551b4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c702654b-63db-49fc-8e16-03e1f80bf7ff"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{credit}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="712" y="0" width="90" height="14" uuid="8ab3c172-4949-4113-8adb-2b3f23150e52">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c702654b-63db-49fc-8e16-03e1f80bf7ff"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{account_debit_sum}.subtract($V{account_credit_sum})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="572" y="0" width="178" height="15" uuid="5561dbf4-84c1-47a0-b63d-540afc86bfe6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="750" y="0" width="52" height="15" uuid="0072d157-1c07-468b-bbc5-91b88d9063c0"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["/" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="180" height="15" uuid="76c35a61-159a-4e65-ba4c-353695d32e43"/>
+				<textFieldExpression><![CDATA[msg($R{account.ledger.print_date}, $P{ACCOUNTING_REPORT}.getPublicationDateTime())]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
