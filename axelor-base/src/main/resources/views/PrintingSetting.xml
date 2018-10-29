@@ -9,6 +9,10 @@
 			<field name="defaultMailBirtTemplate" form-view="birt-template-form" grid-view="birt-template-grid" />
 			<field name="logoPositionSelect" />
 			<field name="colorCode" />
+                <field name="primaryForegroundColor"/>
+                <field name="primaryBackgroundColor"/>
+                <field name="secondaryForegroundColor"/>
+                <field name="secondaryBackgroundColor"/>
 			<panel name="companyHeaderPanel" title="Company Header" colSpan="12">
 				<field name="pdfHeader" colSpan="12" widget="html" showTitle="false"/>
                 <field name="pdfHeaderHeight"/>
@@ -19,9 +23,9 @@
 			</panel>
        	</panel>
     </form>
-    
+
     <grid name="printing-setting-grid" title="Printing Setting" model="com.axelor.apps.base.db.PrintingSettings">
-    	<field name="name"/>
+        <field name="name"/>
     </grid>
 
 </object-views>
