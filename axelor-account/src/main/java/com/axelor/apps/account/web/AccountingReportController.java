@@ -214,6 +214,8 @@ public class AccountingReportController {
         String fileLink =
             ReportFactory.createReport(
                     String.format(IReport.ACCOUNTING_REPORT_TYPE, typeSelect), name + "-${date}")
+                .addParam("AccountingReport", accountingReport)
+                .addParam("Company", accountingReport.getCompany())
                 .addParam("AccountingReportId", accountingReport.getId())
                 .addParam("Locale", ReportSettings.getPrintingLocale(null))
                 .addFormat(accountingReport.getExportTypeSelect())

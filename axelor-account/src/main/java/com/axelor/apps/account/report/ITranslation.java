@@ -133,6 +133,22 @@ public interface ITranslation {
       "AccountingReportType1.credit"; /*)*/
   public static final String ACCOUNTING_REPORT_1_TOTAL = /*$$(*/
       "AccountingReportType1.total"; /*)*/
+  String LEDGER_1 = /*$$(*/ "account.ledger.account_total"; /*)*/
+  String LEDGER_2 = /*$$(*/ "account.ledger.balance_title"; /*)*/
+  String LEDGER_3 = /*$$(*/ "account.ledger.continued"; /*)*/
+  String LEDGER_4 = /*$$(*/ "account.ledger.credit_title"; /*)*/
+  String LEDGER_5 = /*$$(*/ "account.ledger.date_title"; /*)*/
+  String LEDGER_6 = /*$$(*/ "account.ledger.debit_title"; /*)*/
+  String LEDGER_7 = /*$$(*/ "account.ledger.document_reference_title"; /*)*/
+  String LEDGER_8 = /*$$(*/ "account.ledger.from"; /*)*/
+  String LEDGER_9 = /*$$(*/ "account.ledger.journal_title"; /*)*/
+  String LEDGER_10 = /*$$(*/ "account.ledger.move_line_description_title"; /*)*/
+  String LEDGER_11 = /*$$(*/ "account.ledger.period"; /*)*/
+  String LEDGER_12 = /*$$(*/ "account.ledger.print_date"; /*)*/
+  String LEDGER_13 = /*$$(*/ "account.ledger.title"; /*)*/
+  String LEDGER_14 = /*$$(*/ "account.ledger.to"; /*)*/
+  String LEDGER_15 = /*$$(*/ "account.ledger.total"; /*)*/
+  String LEDGER_16 = /*$$(*/ "account.ledger.accounting_currency"; /*)*/
 
   public static final String ACCOUNTING_REPORT_7_TITLE = /*$$(*/
       "AccountingReportType7.title"; /*)*/
