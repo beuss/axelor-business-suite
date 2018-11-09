@@ -4,7 +4,7 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="282"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="713"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Axelor dev"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="STLR"/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<subDataset name="AccountingReportDS" uuid="40f7dfdc-d73c-4b62-b7b4-400ef44020b6">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -69,6 +69,7 @@ where AccountingReport.id = $P{ACCOUNTING_REPORT_ID}]]>
 	</parameter>
 	<queryString language="SQL">
 		<![CDATA[select DISTINCT MoveLine.id as moveLine_id, MoveLine.name as move_line_name, MoveLine.description as move_line_description,
+MoveLine.origin as move_line_origin,
 MoveLine.date_val, MoveLine.partner_full_name as partner,
 CONCAT(MoveLine.account_code, ' ', MoveLine.account_name) as account,
 MoveLine.debit, MoveLine.credit , Invoice.invoice_id as invoice_reference,
@@ -164,6 +165,9 @@ order by first_level_account_code, second_level_account_code, account, MoveLine.
 	</field>
 	<field name="move_line_description" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="move_line_description"/>
+	</field>
+	<field name="move_line_origin" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="move_line_origin"/>
 	</field>
 	<field name="date_val" class="java.sql.Date">
 		<property name="com.jaspersoft.studio.field.label" value="date_val"/>
@@ -520,7 +524,7 @@ msg($R{account.ledger.period}, $V{short_date_formatter}.format($P{ACCOUNTING_REP
 				<reportElement x="70" y="0" width="110" height="14" uuid="88209fdf-fbb5-4a94-bbcd-2483a1e3a0a8">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="34a5c62a-2792-4fa1-9675-70113d2dfb68"/>
 				</reportElement>
-				<textFieldExpression><![CDATA[$F{invoice_reference}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{move_line_origin}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="180" y="0" width="50" height="14" uuid="fb8c1ca4-6e23-4fe2-8d4b-eac911c6c8cc">
