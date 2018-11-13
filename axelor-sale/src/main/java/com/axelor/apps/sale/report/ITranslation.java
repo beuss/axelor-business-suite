@@ -38,6 +38,8 @@ public interface ITranslation {
   public static final String SALES_ORDER_DESCRIPTION = /*$$(*/ "SaleOrder.description"; /*)*/
   public static final String SALES_ORDER_TAX = /*$$(*/ "SaleOrder.tax"; /*)*/
   public static final String SALES_ORDER_QTY_UNIT = /*$$(*/ "SaleOrder.qtyUnit"; /*)*/
+  public static final String SALES_ORDER_QTY_UNIT_DETAILS = /*$$(*/
+      "SaleOrder.qtyUnitDetails"; /*)*/
   public static final String SALES_ORDER_UNIT_PRICE = /*$$(*/ "SaleOrder.unitPrice"; /*)*/
   public static final String SALES_ORDER_PRICE_EXCL_TAX = /*$$(*/ "SaleOrder.priceExclTax"; /*)*/
   public static final String SALES_ORDER_PRICE_INCL_TAX = /*$$(*/ "SaleOrder.priceInclTax"; /*)*/
@@ -79,4 +81,45 @@ public interface ITranslation {
 
   public static final String SALES_ORDER_PRODUCT_SEQUENCE = /*$$(*/
       "SaleOrder.productSequence"; /*)*/
+  public static final String SALES_ORDER_AMOUNT = /*$$(*/ "SaleOrder.amount"; /*)*/
+  public static final String SALES_ORDER_COMPANY_CUSTOMER_TITLE = /*$$(*/
+      "SaleOrder.companyCustomerTitle"; /*)*/
+  public static final String SALES_ORDER_CREATION_DATE_TITLE = /*$$(*/
+      "SaleOrder.creationDateTitle"; /*)*/
+  public static final String SALES_ORDER_DELIVERY_ADDRESS_TITLE = /*$$(*/
+      "SaleOrder.deliveryAddressTitle"; /*)*/
+  public static final String SALES_ORDER_DELIVERY_CONDITION_TITLE = /*$$(*/
+      "SaleOrder.deliveryConditionTitle"; /*)*/
+  public static final String SALES_ORDER_DELIVERY_DATE_TITLE = /*$$(*/
+      "SaleOrder.deliveryDateTitle"; /*)*/
+  public static final String SALES_ORDER_DURATION_TITLE = /*$$(*/ "SaleOrder.durationTitle"; /*)*/
+  public static final String SALES_ORDER_EXTERNAL_REFERENCE_TITLE = /*$$(*/
+      "SaleOrder.externalReferenceTitle"; /*)*/
+  public static final String SALES_ORDER_INDIVIDUAL_CUSTOMER_TITLE = /*$$(*/
+      "SaleOrder.individualCustomerTitle"; /*)*/
+  public static final String SALES_ORDER_INVOICING_ADDRESS_TITLE = /*$$(*/
+      "SaleOrder.invoicingAddressTitle"; /*)*/
+  public static final String SALES_ORDER_ORDER_TITLE = /*$$(*/ "SaleOrder.orderTitle"; /*)*/
+  public static final String SALES_ORDER_PAYMENT_CONDITION_TITLE = /*$$(*/
+      "SaleOrder.paymentConditionTitle"; /*)*/
+  public static final String SALES_ORDER_PAYMENT_MODE_TITLE = /*$$(*/
+      "SaleOrder.paymentModeTitle"; /*)*/
+  public static final String SALES_ORDER_PROFORMA_TITLE = /*$$(*/ "SaleOrder.proformaTitle"; /*)*/
+  public static final String SALES_ORDER_QUOTATION_TITLE = /*$$(*/ "SaleOrder.quotationTitle"; /*)*/
+  public static final String SALES_ORDER_SALEMAN_EMAIL_TITLE = /*$$(*/
+      "SaleOrder.salemanEmailTitle"; /*)*/
+  public static final String SALES_ORDER_SALEMAN_NAME_TITLE = /*$$(*/
+      "SaleOrder.salemanNameTitle"; /*)*/
+  public static final String SALES_ORDER_SALEMAN_PHONE_TITLE = /*$$(*/
+      "SaleOrder.salemanPhoneTitle"; /*)*/
+  public static final String SALES_ORDER_SHIPMENT_DATE_TITLE = /*$$(*/
+      "SaleOrder.shipmentDateTitle"; /*)*/
+  public static final String SALES_ORDER_SUBSCRIPTION_CONTRACT_TITLE = /*$$(*/
+      "SaleOrder.subscriptionContractTitle"; /*)*/
+  public static final String SALES_ORDER_SUBSCRIPTION_PERIODICITY_TITLE = /*$$(*/
+      "SaleOrder.subscriptionPeriodicityTitle"; /*)*/
+  public static final String SALES_ORDER_VALIDITY_DATE_TITLE = /*$$(*/
+      "SaleOrder.validityDateTitle"; /*)*/
+  public static final String SALES_ORDER_IBAN = /*$$(*/ "SaleOrder.iban"; /*)*/
+  public static final String SALES_ORDER_BIC = /*$$(*/ "SaleOrder.bic"; /*)*/
 }
