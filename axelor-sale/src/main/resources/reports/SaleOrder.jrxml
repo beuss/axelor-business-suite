@@ -1,0 +1,1430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SaleOrder" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" resourceBundle="SaleOrder" whenResourceMissingType="Key" uuid="7484c31a-5ee3-48ec-899d-2b49eb341730">
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="false"/>
+	<subDataset name="TaxLinesDS" uuid="866e44ac-4d76-4a44-bbf3-fe7969d74d56">
+		<parameter name="SALE_ORDER_ID" class="java.lang.Long">
+			<defaultValueExpression><![CDATA[$P{SALE_ORDER_ID}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="CURRENCY_CODE" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select TaxLine.value as "TaxPercent", SOLineTax.ex_tax_base as "TaxBase", SOLineTax.tax_total as "TaxTotal"
+from sale_sale_order_line_tax as SOLineTax
+left outer join account_tax_line as TaxLine on (SOLineTax.tax_line = TaxLine.id)
+where SOLineTax.sale_order = $P{SALE_ORDER_ID}]]>
+		</queryString>
+		<field name="TaxPercent" class="java.math.BigDecimal"/>
+		<field name="TaxBase" class="java.math.BigDecimal"/>
+		<field name="TaxTotal" class="java.math.BigDecimal"/>
+	</subDataset>
+	<parameter name="SALE_ORDER_ID" class="java.lang.Long">
+		<parameterDescription><![CDATA[Id of the sale order]]></parameterDescription>
+	</parameter>
+	<parameter name="PROFORMA_INVOICE" class="java.lang.Boolean">
+		<parameterDescription><![CDATA[True if the sale order should be printed as a Proforma invoice]]></parameterDescription>
+		<defaultValueExpression><![CDATA[false]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SALE_ORDER_INFO" class="java.util.Map" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.sqlFetch($P{REPORT_CONNECTION}, 
+"select SaleOrder.id, SaleOrder.sale_order_seq as \"SaleOrderSeq\", SaleOrder.creation_date as \"CreationDate\",  "+
+"SalemanPartner.full_name as \"SalemanFullName\", SalemanPartner.fixed_phone as \"SalemanPhone\", " +
+"SalemanEmailAddress.address as \"SalemanEmail\", SaleConfig.display_saleman_on_printing as \"DisplaySaleman\", " +
+"SaleOrder.shipment_date as \"ShipmentDate\", SaleConfig.sale_order_client_box as \"ClientBox\", " +
+"SaleConfig.sale_order_legal_note as \"LegalNote\", SaleConfig.display_del_cond_on_printing as \"DisplayDeliveryCondition\", " +
+"Company.name as \"CompanyName\", coalesce(MetaFileTN.file_path, MetaFile.file_path) as \"LogoPath\", " +
+"ClientPartner.partner_type_select as \"ClientPartTypeSelect\", ClientPartner.name as \"ClientPartName\", " +
+"ClientPartner.first_name as \"ClientPartFirstName\", MetaSelectItemTitle.title as \"ClientPartTitle\", " +
+"ContactPartner.full_name as \"ContactFullName\", " +
+"InvoicingCountry.name as \"invoicecountry\", DeliveryCountry.name as \"DeliveryCountry\", " +
+"SaleOrder.main_invoicing_address_str as \"InvoicingAddress\", " +
+"SaleOrder.delivery_address_str as \"DeliveryAddress\", " +
+"PaymentCondition.name as \"PaymentCondName\", PaymentMode.name as \"PaymentModeName\", " +
+"SaleOrder.ex_tax_total as \"ExTaxTotal\", SaleOrder.tax_total as \"TaxTotal\", SaleOrder.in_tax_total as \"InTaxTotal\", BankAddress.address as \"BankAddress\", " +
+"BankDetail.iban as \"IBAN\", Bank.code as \"BIC\", Currency.code as \"CurrencyCode\", SaleOrder.external_reference as \"ExternalReference\", " +
+"PrintingSettings.pdf_header as \"PrintingSettingsHeader\", PrintingSettings.pdf_footer as \"PrintingSettingsFooter\", SaleOrder.description as \"Description\", " +
+"Duration.name as \"DurationName\", SaleOrder.delivery_date as \"DeliveryDate\", SaleOrder.delivery_condition as \"DeliveryCondition\", " +
+"SaleOrder.hide_discount as \"hideDiscount\", SaleConfig.display_product_code_on_printing as \"displayProductCodeOnPrinting\", " +
+"SaleConfig.display_tax_detail_on_printing as \"displayTaxDetailOnPrinting\", " +
+"SaleOrder.sale_order_type_select as \"SaleOrderTypeSelect\" ,SaleOrder.status_select as \"StatusSelect\", SaleOrder.specific_notes as \"SpecificNotes\", " +
+"SaleOrder.version_number as \"VersionNumber\", " +
+"PrintingSettings.logo_position_select as \"LogoPosition\", " +
+"COALESCE(NULLIF(PrintingSettings.primary_background_color, ''), '#86bc25') as \"PrimaryBackgroundColor\", " +
+"COALESCE(NULLIF(PrintingSettings.secondary_background_color, ''), '#f3f3f3') as \"SecondaryBackgroundColor\", " +
+"COALESCE(NULLIF(PrintingSettings.primary_foreground_color, ''), '#86bc25') as \"PrimaryForegroundColor\", " +
+"COALESCE(NULLIF(PrintingSettings.secondary_foreground_color, ''), '#f3f3f3') as \"SecondaryForegroundColor\", " +
+"SignatureFile.file_path as \"SalemanSignaturePath\", " +
+"SaleOrder.periodicity_type_select as \"SubscriptionPeriodicityType\", " +
+"SaleOrder.number_of_periods as\"SubscriptionNumberOfPeriods\", " +
+"SaleOrder.subscription_text as \"SubscriptionText\", " +
+"SaleOrder.end_of_validity_date as \"EndOfValidityDate\", " +
+"SaleOrder.in_ati, " +
+"TaxLineInfo.nb_tax_line as \"differentTaxLinesCount\", " +
+"SaleOrderLineInfo.total_discount_amount as \"totalDiscountAmount\", " +
+"AppBase.nb_decimal_digit_for_unit_price " +
+"from sale_sale_order as SaleOrder " +
+"left outer join base_company as Company on (SaleOrder.company = Company.id) " +
+"left outer join base_app_sale as AppSale on true " +
+"left outer join base_app_base as AppBase on true " +
+"left outer join meta_file as MetaFile on (MetaFile.id = Company.logo) " +
+"left outer join base_partner as ClientPartner on (SaleOrder.client_partner = ClientPartner.id) " +
+"left outer join base_partner as ContactPartner on (SaleOrder.contact_partner = ContactPartner.id) " +
+"left outer join base_address as InvoicingAddress on (SaleOrder.main_invoicing_address = InvoicingAddress.id) " +
+"left outer join base_country as InvoicingCountry on (InvoicingAddress.addressl7country = InvoicingCountry.id) " +
+"left outer join account_payment_condition as PaymentCondition on (SaleOrder.payment_condition = PaymentCondition.id) " +
+"left outer join account_payment_mode as PaymentMode on (SaleOrder.payment_mode = PaymentMode.id) " +
+"left outer join base_address as DeliveryAddress on (SaleOrder.delivery_address = DeliveryAddress.id) " +
+"left outer join base_country as DeliveryCountry on (DeliveryAddress.addressl7country = DeliveryCountry.id) " +
+"left outer join base_bank_details as BankDetail on (SaleOrder.company_bank_details = BankDetail.id) " +
+"left outer join base_currency as Currency on (SaleOrder.currency = Currency.id) " +
+"left outer join base_printing_settings as PrintingSettings on (SaleOrder.printing_settings = PrintingSettings.id AND " +
+"AppSale.printing_config_per_sale_order = true ) OR (Company.printing_settings = PrintingSettings.id " +
+"AND (AppSale.printing_config_per_sale_order = null OR AppSale.printing_config_per_sale_order = false " +
+"OR SaleOrder.printing_settings is null )) " +
+"left outer join auth_user as SalemanUser on (SaleOrder.saleman_user = SalemanUser.id) " +
+"left outer join base_partner as SalemanPartner on (SalemanUser.partner = SalemanPartner.id) " +
+"left outer join message_email_address as SalemanEmailAddress on (SalemanPartner.email_address = SalemanEmailAddress.id) " +
+"left outer join sale_sale_config as SaleConfig on (SaleConfig.company = Company.id) " +
+"left outer join base_duration as Duration on (SaleOrder.duration = Duration.id) " +
+"left outer join base_bank as Bank on (BankDetail.bank = Bank.id) " +
+"left outer join base_bank_address as BankAddress on (BankDetail.bank_address = BankAddress.id) " +
+"left outer join meta_file as SignatureFile on SalemanUser.electronic_signature = SignatureFile.id " +
+"left outer join base_trading_name as TradingName on (TradingName.id = SaleOrder.trading_name) " +
+"left outer join meta_file as MetaFileTN on (MetaFileTN.id = TradingName.logo) " +
+"left outer join meta_select as MetaSelectTitle on (MetaSelectTitle.name = 'partner.title.type.select') " +
+"left outer join meta_select_item as MetaSelectItemTitle on (MetaSelectItemTitle.select_id = MetaSelectTitle.id AND MetaSelectItemTitle.value = CAST(ClientPartner.title_select as VARCHAR)) " +
+"left outer join ( " +
+"	SELECT COUNT(DISTINCT tax_line) as nb_tax_line, sale_order " +
+"	FROM sale_sale_order_line_tax " +
+"	GROUP BY sale_order " +
+") as TaxLineInfo ON (TaxLineInfo.sale_order = SaleOrder.id) " +
+"left outer join ( " +
+"	SELECT SUM((price_discounted - (CASE WHEN in_ati THEN in_tax_price ELSE price END)) * qty) as total_discount_amount, sale_order " +
+"	FROM sale_sale_order_line " +
+"	INNER JOIN sale_sale_order ON (sale_sale_order.id = sale_sale_order_line.sale_order) " +
+"	GROUP BY sale_order " +
+") as SaleOrderLineInfo ON(SaleOrderLineInfo.sale_order = SaleOrder.id) " +
+"where SaleOrder.id = ?", $P{SALE_ORDER_ID})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SHOW_TAX" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[((Boolean)$P{SALE_ORDER_INFO}.get("displayTaxDetailOnPrinting") || (Long)$P{SALE_ORDER_INFO}.get("differentTaxLinesCount") > 1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SHOW_DISCOUNT" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("hideDiscount") == false && ((java.math.BigDecimal)$P{SALE_ORDER_INFO}.get("totalDiscountAmount")).compareTo(BigDecimal.ZERO) < 0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ATTACHMENT_PATH" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+	SOLine.id, 
+	SOLine.description, 
+	SOLine.qty as "quantity", 
+	Unit.label_to_printing as "UnitCode", 
+	SOLine.product_name as "ProductName", 
+	(CASE WHEN SaleOrder.in_ati
+		THEN SOLine.in_tax_price
+		ELSE SOLine.price END)
+		as "unit_price", 
+	SOLine.ex_tax_total, 
+	SOLine.in_tax_total,
+	SOLine.total_pack,
+	Currency.code as "CurrencyCode",
+	TaxLine.value as "tax_line",
+	Product.code as "productCode", 
+	(SOLine.price_discounted 
+		- (CASE WHEN SaleOrder.in_ati 
+			THEN SOLine.in_tax_price
+			ELSE SOLine.price END))
+		* SOLine.qty 
+		as "totalDiscountAmount",
+	SOLine.price_discounted,
+	SOLine.sequence,
+	SaleOrder.sale_order_type_select, 
+	SaleOrder.in_ati,
+	Product.product_type_select,
+	SOLine.type_select != 0 as is_title_line
+from sale_sale_order as SaleOrder
+left outer join sale_sale_order_line as SOLine on (SOLine.sale_order = SaleOrder.id)
+left outer join base_product as Product on (SOLine.product = Product.id)
+left outer join base_unit as Unit on (SOLine.unit = Unit.id)
+left outer join base_currency as Currency on (SaleOrder.currency = Currency.id)
+left outer join account_tax_line as TaxLine on (SOLine.tax_line = TaxLine.id)
+where SaleOrder.id = $P{SALE_ORDER_ID}
+order by SOLine.sequence]]>
+	</queryString>
+	<field name="id" class="java.lang.Long"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="quantity" class="java.math.BigDecimal"/>
+	<field name="UnitCode" class="java.lang.String"/>
+	<field name="ProductName" class="java.lang.String"/>
+	<field name="unit_price" class="java.math.BigDecimal"/>
+	<field name="ex_tax_total" class="java.math.BigDecimal"/>
+	<field name="in_tax_total" class="java.math.BigDecimal"/>
+	<field name="total_pack" class="java.math.BigDecimal"/>
+	<field name="CurrencyCode" class="java.lang.String"/>
+	<field name="tax_line" class="java.math.BigDecimal"/>
+	<field name="productCode" class="java.lang.String"/>
+	<field name="totalDiscountAmount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[totalDiscountAmount]]></fieldDescription>
+	</field>
+	<field name="price_discounted" class="java.math.BigDecimal"/>
+	<field name="sequence" class="java.lang.Integer"/>
+	<field name="sale_order_type_select" class="java.lang.Integer"/>
+	<field name="in_ati" class="java.lang.Boolean"/>
+	<field name="product_type_select" class="java.lang.String"/>
+	<field name="is_title_line" class="java.lang.Boolean"/>
+	<variable name="DESCRIPTION" class="java.lang.String">
+		<variableExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix($F{description})]]></variableExpression>
+	</variable>
+	<variable name="SaleOrderTotalWithoutDiscount" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ex_tax_total}.compareTo(BigDecimal.ZERO) >= 0 ? $F{ex_tax_total}.subtract($F{totalDiscountAmount}) : BigDecimal.ZERO]]></variableExpression>
+		<initialValueExpression><![CDATA[BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="SaleOrderTotalDiscount" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalDiscountAmount}.add($F{ex_tax_total}.compareTo(BigDecimal.ZERO) < 0 ? $F{ex_tax_total} : BigDecimal.ZERO)]]></variableExpression>
+		<initialValueExpression><![CDATA[BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="UnitPrice" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{unit_price}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[true]]></groupExpression>
+		<groupFooter>
+			<band height="1">
+				<staticText>
+					<reportElement x="0" y="0" width="555" height="0" uuid="71124626-a0e9-49e8-895b-e5fc7f06386f"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<text><![CDATA[]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="185" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="33" width="555" height="15" isRemoveLineWhenBlank="true" uuid="5afa6e3d-d83e-4661-ba1d-7d7d34486916">
+					<printWhenExpression><![CDATA[(int)$P{SALE_ORDER_INFO}.get("LogoPosition") == 0 || (int)$P{SALE_ORDER_INFO}.get("LogoPosition") == 2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{SALE_ORDER_INFO}.get("PrintingSettingsHeader"))]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement positionType="Float" stretchType="ElementGroupHeight" x="0" y="55" width="555" height="120" isRemoveLineWhenBlank="true" uuid="49722368-032e-47e1-8242-2c0bb1d804d7">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
+				</reportElement>
+				<frame>
+					<reportElement key="orderInfoFrame" x="0" y="0" width="240" height="80" uuid="c1547fee-d3f0-40a3-949d-a6e1c83e66c0"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textField isStretchWithOverflow="true">
+						<reportElement x="0" y="0" width="240" height="20" uuid="c5c8e116-c503-4383-bbca-5639a733e409"/>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+							<bottomPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="12" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($P{PROFORMA_INVOICE} ? $R{SaleOrder.proformaTitle} : ((int)$P{SALE_ORDER_INFO}.get("StatusSelect") < 3  ? $R{SaleOrder.quotationTitle} : $R{SaleOrder.orderTitle}), $P{SALE_ORDER_INFO}.get("SaleOrderSeq"), (int)$P{SALE_ORDER_INFO}.get("VersionNumber") > 1 ? "-" + $P{SALE_ORDER_INFO}.get("VersionNumber") : "")]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement positionType="Float" x="0" y="20" width="240" height="5" isRemoveLineWhenBlank="true" uuid="87abeaef-df21-40da-8331-ab278c8ad803"/>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.creationDateTitle}, $P{SALE_ORDER_INFO}.get("CreationDate"))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="0" y="25" width="240" height="5" uuid="24fd5f46-b9ac-4a36-ba00-16838e5ec764"/>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.durationTitle}, $P{SALE_ORDER_INFO}.get("DurationName"))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="0" y="30" width="240" height="5" uuid="5efdea7b-76d7-4f7d-a02e-650dd3c05586"/>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.validityDateTitle}, $P{SALE_ORDER_INFO}.get("EndOfValidityDate"))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" hyperlinkType="Reference">
+						<reportElement positionType="Float" x="0" y="35" width="240" height="5" isRemoveLineWhenBlank="true" uuid="365f9eb5-76fd-4f4a-8314-b628a852b60c">
+							<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("DisplaySaleman") && $P{SALE_ORDER_INFO}.get("SalemanFullName") != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.salemanNameTitle}, $P{SALE_ORDER_INFO}.get("SalemanFullName"))]]></textFieldExpression>
+						<hyperlinkReferenceExpression><![CDATA["mailto:" + $P{SALE_ORDER_INFO}.get("SalemanEmail")]]></hyperlinkReferenceExpression>
+						<hyperlinkWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("SalemanEmail") != null]]></hyperlinkWhenExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" hyperlinkType="Reference">
+						<reportElement positionType="Float" x="0" y="40" width="240" height="5" isRemoveLineWhenBlank="true" uuid="2ed8f2fc-b7e4-474a-b9be-75909b750190">
+							<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("DisplaySaleman") && $P{SALE_ORDER_INFO}.get("SalemanEmail") != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.salemanEmailTitle}, $P{SALE_ORDER_INFO}.get("SalemanEmail"))]]></textFieldExpression>
+						<hyperlinkReferenceExpression><![CDATA["mailto:" + $P{SALE_ORDER_INFO}.get("SalemanEmail")]]></hyperlinkReferenceExpression>
+						<hyperlinkWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("SalemanEmail") != null]]></hyperlinkWhenExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" hyperlinkType="" hyperlinkTarget="">
+						<reportElement positionType="Float" x="0" y="45" width="240" height="5" isRemoveLineWhenBlank="true" uuid="190eaa2f-12c0-4b9e-8ed8-99ed550d302d">
+							<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("DisplaySaleman") && $P{SALE_ORDER_INFO}.get("SalemanPhone") != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.salemanPhoneTitle}, $P{SALE_ORDER_INFO}.get("SalemanPhone"))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="0" y="50" width="240" height="5" isRemoveLineWhenBlank="true" uuid="6bd02d3b-b1c5-47cf-b375-cb91808fe23b">
+							<printWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("PaymentCondName") != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.paymentConditionTitle}, $P{REPORT_RESOURCE_BUNDLE}.containsKey( "value:" + $P{SALE_ORDER_INFO}.get("PaymentCondName") ) ? $P{REPORT_RESOURCE_BUNDLE}.getString( "value:" + $P{SALE_ORDER_INFO}.get("PaymentCondName") ) : $P{SALE_ORDER_INFO}.get("PaymentCondName"))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="0" y="55" width="240" height="5" isRemoveLineWhenBlank="true" uuid="03b07df0-dae1-4247-9d6b-3de4da92f0cf">
+							<printWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("PaymentModeName") != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.paymentModeTitle}, $P{REPORT_RESOURCE_BUNDLE}.containsKey( "value:" + $P{SALE_ORDER_INFO}.get("PaymentModeName") ) ? $P{REPORT_RESOURCE_BUNDLE}.getString( "value:" + $P{SALE_ORDER_INFO}.get("PaymentModeName") ) : $P{SALE_ORDER_INFO}.get("PaymentModeName"))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" hyperlinkType="Reference">
+						<reportElement positionType="Float" x="0" y="60" width="240" height="5" isRemoveLineWhenBlank="true" uuid="97589a0a-ecca-4ede-8cbf-23e0957a7585">
+							<printWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("ExternalReference") != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.externalReferenceTitle}, $P{SALE_ORDER_INFO}.get("ExternalReference"))]]></textFieldExpression>
+						<hyperlinkReferenceExpression><![CDATA["mailto:" + $P{SALE_ORDER_INFO}.get("SalemanEmail")]]></hyperlinkReferenceExpression>
+						<hyperlinkWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("SalemanEmail") != null]]></hyperlinkWhenExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" hyperlinkType="Reference">
+						<reportElement positionType="Float" x="0" y="65" width="240" height="5" isRemoveLineWhenBlank="true" uuid="81fd9c7a-2a8e-44d4-8862-9b5e52724800">
+							<printWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("ShipmentDate") != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.shipmentDateTitle}, $P{SALE_ORDER_INFO}.get("ShipmentDate"))]]></textFieldExpression>
+						<hyperlinkReferenceExpression><![CDATA["mailto:" + $P{SALE_ORDER_INFO}.get("SalemanEmail")]]></hyperlinkReferenceExpression>
+						<hyperlinkWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("SalemanEmail") != null]]></hyperlinkWhenExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" hyperlinkType="Reference">
+						<reportElement positionType="Float" x="0" y="70" width="240" height="5" isRemoveLineWhenBlank="true" uuid="c7efb521-d69a-470a-b671-488f8c61e532">
+							<printWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("DeliveryDate") != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.deliveryDateTitle}, $P{SALE_ORDER_INFO}.get("DeliveryDate"))]]></textFieldExpression>
+						<hyperlinkReferenceExpression><![CDATA["mailto:" + $P{SALE_ORDER_INFO}.get("SalemanEmail")]]></hyperlinkReferenceExpression>
+						<hyperlinkWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("SalemanEmail") != null]]></hyperlinkWhenExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" hyperlinkType="Reference">
+						<reportElement positionType="Float" x="0" y="75" width="240" height="5" isRemoveLineWhenBlank="true" uuid="948326ce-7ef9-4360-8681-54b2f701df15">
+							<printWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("DeliveryCondition") != null && (Boolean)$P{SALE_ORDER_INFO}.get("DisplayDeliveryCondition")]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.deliveryConditionTitle}, $P{SALE_ORDER_INFO}.get("DeliveryCondition"))]]></textFieldExpression>
+						<hyperlinkReferenceExpression><![CDATA["mailto:" + $P{SALE_ORDER_INFO}.get("SalemanEmail")]]></hyperlinkReferenceExpression>
+						<hyperlinkWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("SalemanEmail") != null]]></hyperlinkWhenExpression>
+					</textField>
+				</frame>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="90" width="554" height="10" isRemoveLineWhenBlank="true" uuid="6bdefc0f-ca9a-4e70-9a53-aa8dbda9bc6c">
+						<printWhenExpression><![CDATA[(int)$P{SALE_ORDER_INFO}.get("SaleOrderTypeSelect") == 2]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{SaleOrder.subscriptionContractTitle}]]></textFieldExpression>
+				</textField>
+				<frame>
+					<reportElement x="314" y="20" width="240" height="60" uuid="97282ce4-55a5-481a-9e5f-c2b09d2bccd4"/>
+					<textField isStretchWithOverflow="true">
+						<reportElement x="0" y="0" width="240" height="10" isRemoveLineWhenBlank="true" uuid="7afd7a9d-923c-404f-a310-79dbb9c0fead"/>
+						<textElement>
+							<font size="12" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[(int)$P{SALE_ORDER_INFO}.get("ClientPartTypeSelect") == 1 ?
+msg($R{SaleOrder.companyCustomerTitle}, $P{SALE_ORDER_INFO}.get("ClientPartName")) :
+msg($R{SaleOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getString((String)$P{SALE_ORDER_INFO}.get("ClientPartTitle")), $P{SALE_ORDER_INFO}.get("ClientPartName"), $P{SALE_ORDER_INFO}.get("ClientPartFirstName"))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="0" y="10" width="240" height="10" isRemoveLineWhenBlank="true" uuid="0a774ccf-de7d-405b-9c22-aefa2457e0b3">
+							<printWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("ContactFullName") != null]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font size="12" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$P{SALE_ORDER_INFO}.get("ContactFullName")]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="0" y="20" width="240" height="10" isRemoveLineWhenBlank="true" uuid="5e96d672-7476-4966-afae-89870c0a23c0">
+							<printWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("InvoicingAddress") != null]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="5"/>
+						<textElement>
+							<font size="10" isBold="false" isUnderline="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{SaleOrder.invoicingAddressTitle}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="0" y="30" width="240" height="10" isRemoveLineWhenBlank="true" uuid="a4a77b55-3a3b-49be-97d5-5ac35b816778">
+							<printWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("InvoicingAddress") != null]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font size="10" isBold="false" isUnderline="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$P{SALE_ORDER_INFO}.get("InvoicingAddress")]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="0" y="40" width="240" height="10" isRemoveLineWhenBlank="true" uuid="d16b1276-ca72-4a4f-9c69-39f7d2a03c6c">
+							<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{SALE_ORDER_INFO}.get("DeliveryAddress")) == false && java.util.Objects.equals($P{SALE_ORDER_INFO}.get("DeliveryAddress"), $P{SALE_ORDER_INFO}.get("InvoicingAddress")) == false]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="5"/>
+						<textElement>
+							<font size="10" isBold="false" isUnderline="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{SaleOrder.deliveryAddressTitle}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="0" y="50" width="240" height="10" isRemoveLineWhenBlank="true" uuid="762e83ae-7f28-4b06-8205-09628c3e6d57">
+							<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{SALE_ORDER_INFO}.get("DeliveryAddress")) == false && java.util.Objects.equals($P{SALE_ORDER_INFO}.get("DeliveryAddress"), $P{SALE_ORDER_INFO}.get("InvoicingAddress")) == false]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font size="10" isBold="false" isUnderline="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$P{SALE_ORDER_INFO}.get("DeliveryAddress")]]></textFieldExpression>
+					</textField>
+				</frame>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="100" width="554" height="10" isRemoveLineWhenBlank="true" uuid="64e77def-06f3-46b7-abdd-2d9f8ffeb5d9">
+						<printWhenExpression><![CDATA[(int)$P{SALE_ORDER_INFO}.get("SaleOrderTypeSelect") == 2]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[msg($R{SaleOrder.subscriptionPeriodicityTitle}, $P{SALE_ORDER_INFO}.get("SubscriptionNumberOfPeriods"), (int)$P{SALE_ORDER_INFO}.get("SubscriptionPeriodicityTypeSelect") == 1 ? $R{day(s)} : $R{month(s)})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="110" width="554" height="10" isRemoveLineWhenBlank="true" uuid="addb405e-ea34-4f4f-9526-e54d7f850c44">
+						<printWhenExpression><![CDATA[(int)$P{SALE_ORDER_INFO}.get("SaleOrderTypeSelect") == 2]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[msg($R{SaleOrder.subscriptionPeriodicityTitle}, $P{SALE_ORDER_INFO}.get("SubscriptionNumberOfPeriods"), (int)$P{SALE_ORDER_INFO}.get("SubscriptionPeriodicityTypeSelect") == 1 ? $R{day(s)} : $R{month(s)})]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="0" width="555" height="30" isRemoveLineWhenBlank="true" uuid="a07dcdda-d995-44e8-808f-b811b50502a5">
+					<printWhenExpression><![CDATA[(int)$P{SALE_ORDER_INFO}.get("LogoPosition") != 0]]></printWhenExpression>
+				</reportElement>
+				<image scaleImage="RealSize" vAlign="Middle">
+					<reportElement x="0" y="0" width="120" height="30" uuid="eeedddf3-e47a-43fd-ae39-45822da30778">
+						<printWhenExpression><![CDATA[(int)$P{SALE_ORDER_INFO}.get("LogoPosition") == 1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{ATTACHMENT_PATH} + $P{SALE_ORDER_INFO}.get("LogoPath")]]></imageExpression>
+				</image>
+				<image scaleImage="RealSize" hAlign="Center" vAlign="Middle">
+					<reportElement x="217" y="0" width="120" height="30" uuid="a169b448-d126-4f13-9bdc-a8a4603e4630">
+						<printWhenExpression><![CDATA[(int)$P{SALE_ORDER_INFO}.get("LogoPosition") == 2]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{ATTACHMENT_PATH} + $P{SALE_ORDER_INFO}.get("LogoPath")]]></imageExpression>
+				</image>
+				<image scaleImage="RealSize" hAlign="Right" vAlign="Middle">
+					<reportElement x="435" y="0" width="120" height="30" uuid="63011429-7aab-43b7-b011-721197b47c04">
+						<printWhenExpression><![CDATA[(int)$P{SALE_ORDER_INFO}.get("LogoPosition") == 3]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{ATTACHMENT_PATH} + $P{SALE_ORDER_INFO}.get("LogoPath")]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="0" width="435" height="15" uuid="f8eca44e-5e09-4dbb-ba22-56c0e2ca60f5">
+						<printWhenExpression><![CDATA[(int)$P{SALE_ORDER_INFO}.get("LogoPosition") == 3]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Left" markup="html">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{SALE_ORDER_INFO}.get("PrintingSettingsHeader"))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="120" y="0" width="435" height="15" uuid="9079d0f8-619c-4128-aa97-6dc0c43c3a0a">
+						<printWhenExpression><![CDATA[(int)$P{SALE_ORDER_INFO}.get("LogoPosition") == 1]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Left" markup="html">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{SALE_ORDER_INFO}.get("PrintingSettingsHeader"))]]></textFieldExpression>
+				</textField>
+			</frame>
+			<line>
+				<reportElement positionType="Float" x="0" y="48" width="555" height="1" uuid="b8443b52-2200-4aea-aef3-5f0e1fb31ea4"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="80" height="20" uuid="5f8049bd-6d7e-488c-9eca-a79eb3a55580">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting")]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{SaleOrder.productCode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" mode="Opaque" x="80" y="0" width="218" height="20" uuid="8bf54d76-70db-406b-90ba-b9bee786808d">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") && $P{SHOW_TAX}]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{SaleOrder.productDescription}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" mode="Opaque" x="80" y="0" width="261" height="20" uuid="fa5ba426-5f0d-45ba-bc28-207f3cc694ac">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") && $P{SHOW_TAX} == false]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{SaleOrder.productDescription}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="280" height="20" uuid="475a76c1-89ce-48e4-bca6-34865d306b03">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") == false && $P{SHOW_TAX}]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{SaleOrder.productDescription}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="323" height="20" uuid="08c8884d-3475-4246-b1ad-a12995988128">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") == false && $P{SHOW_TAX} == false]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{SaleOrder.productDescription}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00%">
+				<reportElement mode="Opaque" x="280" y="0" width="43" height="20" uuid="218344e1-e6ba-4f1b-84bf-27a99566fb44">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[$P{SHOW_TAX}]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{SaleOrder.tax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="323" y="0" width="60" height="20" uuid="68406f60-e4c3-4daa-b785-70d101f1b655">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{SaleOrder.qtyUnit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="383" y="0" width="43" height="20" uuid="0d8651f8-bad1-4cbd-9ae8-a8c33bc199a6">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT}]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{SaleOrder.unitPrice}]]></textFieldExpression>
+				<patternExpression><![CDATA["#,##0." + String.join("", Collections.nCopies((int)$P{SALE_ORDER_INFO}.get("nb_decimal_digit_for_unit_price"), "0"))]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="383" y="0" width="62" height="20" uuid="cd59dc41-71e7-4922-83b3-8ef515ce83ea">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} == false]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{SaleOrder.unitPrice}]]></textFieldExpression>
+				<patternExpression><![CDATA["#,##0." + String.join("", Collections.nCopies((int)$P{SALE_ORDER_INFO}.get("nb_decimal_digit_for_unit_price"), "0"))]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="426" y="0" width="43" height="20" uuid="1355f0bb-b70d-49cd-9176-3541202dc870">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT}]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{SaleOrder.discountAmount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="469" y="0" width="86" height="20" uuid="171155e5-10af-4a63-8aa6-f99571b422ea">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT}]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{in_ati} ? $R{SaleOrder.priceInclTax} : $R{SaleOrder.priceExclTax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="445" y="0" width="110" height="20" uuid="6efce402-2851-4b2a-acb9-e3a9d755d08c">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} == false]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{in_ati} ? $R{SaleOrder.priceInclTax} : $R{SaleOrder.priceExclTax}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Prevent">
+			<frame>
+				<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="555" height="15" uuid="41bdbe5a-f111-43fe-ae59-1216a2fc1e00">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{SALE_ORDER_INFO}.get("SecondaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{is_title_line}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</frame>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="80" height="15" uuid="f16576d4-c7c2-4f78-b750-d81a47c5aa39">
+					<propertyExpression name="net.sf.jasperreports.style.fontSize"><![CDATA[$F{productCode}.length() <= 17 ? "8" : "7"]]></propertyExpression>
+					<printWhenExpression><![CDATA[$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting")]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productCode}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement key="" stretchType="ContainerHeight" x="80" y="0" width="200" height="15" uuid="9468a602-e217-4e0c-a3b5-c64024844023">
+					<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") && $P{SHOW_TAX}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement key="" x="0" y="0" width="200" height="8" uuid="2b7c7c17-5d36-4ff2-bd3e-4e36e249c538">
+						<propertyExpression name="net.sf.jasperreports.style.isBold"><![CDATA[$F{is_title_line} ? "true" : "false"]]></propertyExpression>
+					</reportElement>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ProductName}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="" positionType="Float" x="0" y="8" width="200" height="7" isRemoveLineWhenBlank="true" uuid="00021727-d19a-4184-a8b0-1cc966ceb080"/>
+					<box leftPadding="2" bottomPadding="4" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement markup="html">
+						<font size="8" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{DESCRIPTION}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement stretchType="ContainerHeight" x="80" y="0" width="243" height="15" uuid="711f03c2-08bd-45f6-9b21-a22e9507deb8">
+					<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") && $P{SHOW_TAX} == false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement key="" x="0" y="0" width="243" height="8" uuid="65129715-6cb8-4264-a0c3-11d53fa6187f">
+						<propertyExpression name="net.sf.jasperreports.style.isBold"><![CDATA[$F{is_title_line} ? "true" : "false"]]></propertyExpression>
+					</reportElement>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ProductName}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement key="" positionType="Float" x="0" y="8" width="243" height="7" isRemoveLineWhenBlank="true" uuid="2e14fbdf-ba26-4c03-904a-49e362784a6a"/>
+					<box leftPadding="2" bottomPadding="4" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement markup="html">
+						<font size="8" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{DESCRIPTION}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="280" height="15" uuid="49334951-5e59-48ea-93d3-2ff13d2d2cb0">
+					<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") == false && $P{SHOW_TAX}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="0" width="280" height="8" uuid="520cbe71-07aa-4754-bcb6-f217409e2dc6">
+						<propertyExpression name="net.sf.jasperreports.style.isBold"><![CDATA[$F{is_title_line} ? "true" : "false"]]></propertyExpression>
+						<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") == false && $P{SHOW_TAX}]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ProductName}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="0" y="8" width="280" height="7" isRemoveLineWhenBlank="true" uuid="7847091c-7b55-4921-bd46-32f1fe2f8956">
+						<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") == false && $P{SHOW_TAX}]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="2" bottomPadding="4" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement markup="html">
+						<font size="8" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{DESCRIPTION}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="323" height="15" uuid="6ef39359-0fd3-4d76-9f95-6c88ffea288b">
+					<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") == false && $P{SHOW_TAX} == false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="0" width="323" height="8" uuid="2d020038-e6de-4121-af4c-075b3a6dc2bc">
+						<propertyExpression name="net.sf.jasperreports.style.isBold"><![CDATA[$F{is_title_line} ? "true" : "false"]]></propertyExpression>
+						<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") == false && $P{SHOW_TAX} == false]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ProductName}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="0" y="8" width="323" height="7" isRemoveLineWhenBlank="true" uuid="e6af828e-9fe2-4469-aca6-e183d86aafdb">
+						<printWhenExpression><![CDATA[(Boolean)$P{SALE_ORDER_INFO}.get("displayProductCodeOnPrinting") == false && $P{SHOW_TAX} == false]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="2" bottomPadding="4" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement markup="html">
+						<font size="8" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{DESCRIPTION}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00%" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="280" y="0" width="43" height="15" uuid="29fff620-ada9-494f-a889-1914fbe18265">
+					<printWhenExpression><![CDATA[$P{SHOW_TAX}]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tax_line}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="ContainerBottom" x="323" y="0" width="60" height="15" uuid="1bffec4b-cd3e-437b-b32e-2228666f92b7">
+					<printWhenExpression><![CDATA[$F{is_title_line} == false]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[msg($R{SaleOrder.qtyUnitDetails}, $F{quantity}, $F{UnitCode} == null ? "" : $F{UnitCode})]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement stretchType="ContainerBottom" x="383" y="0" width="43" height="15" uuid="3ee83f61-e91e-4c3e-a12c-d65424691d4f">
+					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="ContainerBottom" x="0" y="0" width="43" height="15" uuid="e84e2931-ae83-4a52-b1e0-08e92c8bc227">
+						<printWhenExpression><![CDATA[$F{is_title_line} == false]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{SHOW_DISCOUNT} ? $F{unit_price} : $F{price_discounted}]]></textFieldExpression>
+					<patternExpression><![CDATA["#,##0." + String.join("", Collections.nCopies((int)$P{SALE_ORDER_INFO}.get("nb_decimal_digit_for_unit_price"), "0"))]]></patternExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement stretchType="ContainerBottom" x="383" y="0" width="62" height="15" uuid="71ae09d3-56fb-4f92-8617-3c1b296f0d54">
+					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} == false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="ContainerBottom" x="0" y="0" width="62" height="15" uuid="0c37576d-6bbe-4824-a3c7-72587673e701">
+						<printWhenExpression><![CDATA[$F{is_title_line} == false]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{SHOW_DISCOUNT} ? $F{unit_price} : $F{price_discounted}]]></textFieldExpression>
+					<patternExpression><![CDATA["#,##0." + String.join("", Collections.nCopies((int)$P{SALE_ORDER_INFO}.get("nb_decimal_digit_for_unit_price"), "0"))]]></patternExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement stretchType="ContainerBottom" x="426" y="0" width="43" height="15" uuid="79b7699c-777d-4713-9225-3daa812a6f7a">
+					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="ContainerBottom" x="0" y="0" width="43" height="15" uuid="fc934587-0c02-442a-a11f-ccce80f82816">
+						<printWhenExpression><![CDATA[$F{is_title_line} == false]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{totalDiscountAmount}]]></textFieldExpression>
+					<patternExpression><![CDATA["#,##0." + String.join("", Collections.nCopies((int)$P{SALE_ORDER_INFO}.get("nb_decimal_digit_for_unit_price"), "0"))]]></patternExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement stretchType="ContainerBottom" x="469" y="0" width="86" height="15" uuid="5adce7b5-27dc-470a-87e5-95e7bbdb319b">
+					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="ContainerBottom" x="0" y="0" width="86" height="15" uuid="b286f7c6-0252-4cd0-a0f0-afa8c63bffde">
+						<printWhenExpression><![CDATA[$F{is_title_line} == false]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[((Boolean)$P{SALE_ORDER_INFO}.get("in_ati") ? $F{in_tax_total} : $F{ex_tax_total}) + " " + $F{CurrencyCode}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement stretchType="ContainerBottom" x="445" y="0" width="110" height="15" uuid="6364f160-a2de-4c80-b19b-c8d1dedc4d7d">
+					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} == false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="ContainerBottom" x="0" y="0" width="110" height="15" uuid="1a3f2fe4-fe98-4e2b-a997-300174018d7e">
+						<printWhenExpression><![CDATA[$F{is_title_line} == false]]></printWhenExpression>
+					</reportElement>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[((Boolean)$P{SALE_ORDER_INFO}.get("in_ati") ? $F{in_tax_total} : $F{ex_tax_total}) + " " + $F{CurrencyCode}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement positionType="Float" x="445" y="6" width="58" height="15" uuid="a5847618-bfb3-42d1-92b0-0cb0833e385a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement positionType="Float" x="503" y="6" width="52" height="15" uuid="d3279c54-b25c-44fc-a481-f6fa70017aa6"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["/" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="6" width="445" height="15" uuid="41ff2868-9930-45f1-bd35-47255700c116"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{SALE_ORDER_INFO}.get("PrintingSettingsFooter"))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="1" isRemoveLineWhenBlank="true" uuid="34087893-3d4b-4cb9-b81f-94b323b7037d">
+					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{SALE_ORDER_INFO}.get("SpecificNotes")) == false]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{SALE_ORDER_INFO}.get("SpecificNotes")]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="0" y="3" width="555" height="1" uuid="f2856c18-3fcf-4f3f-8a69-d8f9730923be"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="239" splitType="Immediate">
+			<frame>
+				<reportElement x="0" y="15" width="270" height="30" uuid="470bdeff-3d7f-4a8a-9b3f-2b78bcb9d4f5">
+					<printWhenExpression><![CDATA[$P{SHOW_TAX}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<componentElement>
+					<reportElement x="0" y="15" width="270" height="15" uuid="fc99a2e7-92e1-4083-95ce-b708bc236025"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="TaxLinesDS" uuid="091ad9d2-ab46-4867-866e-5ea431f835dd">
+							<datasetParameter name="SALE_ORDER_ID">
+								<datasetParameterExpression><![CDATA[$P{SALE_ORDER_ID}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="CURRENCY_CODE">
+								<datasetParameterExpression><![CDATA[$P{SALE_ORDER_INFO}.get("CurrencyCode")]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="REPORT_RESOURCE_BUNDLE">
+								<datasetParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:listContents height="15" width="270">
+							<textField isStretchWithOverflow="true" pattern="#,##0.00%">
+								<reportElement x="0" y="0" width="70" height="15" uuid="f2c27750-c2bd-4ff4-a64d-c1de36631ed1"/>
+								<box rightPadding="3">
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{TaxPercent}]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true">
+								<reportElement x="70" y="0" width="100" height="15" uuid="7b50f8a2-85e4-426a-8557-a866f9825bbc"/>
+								<box rightPadding="3">
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[msg($R{SaleOrder.amount}, $F{TaxBase}, $P{CURRENCY_CODE})]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true">
+								<reportElement x="170" y="0" width="100" height="15" uuid="cfe92510-ce1c-433f-92d7-119d825a3eea"/>
+								<box rightPadding="3">
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[msg($R{SaleOrder.amount}, $F{TaxTotal}, $P{CURRENCY_CODE})]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+				<textField>
+					<reportElement x="0" y="0" width="70" height="15" uuid="88fae17c-5ccc-41b4-a519-68bd58ca5594"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{SaleOrder.tax}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="70" y="0" width="100" height="15" uuid="c912e6a9-e838-4dcf-ba2d-3519d64b08b8"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{SaleOrder.base}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="170" y="0" width="100" height="15" uuid="35b41383-2b1d-46f5-8e60-e836ffa6089b"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{SaleOrder.taxAmount}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="289" y="15" width="266" height="50" uuid="e33e2d94-787c-4d8d-bfe0-894f2cc4cf3e"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+				</box>
+				<frame>
+					<reportElement x="0" y="0" width="266" height="10" isRemoveLineWhenBlank="true" uuid="cddcaa59-30b2-403d-894a-ff21e3adfa44">
+						<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT}]]></printWhenExpression>
+					</reportElement>
+					<box rightPadding="0"/>
+					<textField isStretchWithOverflow="true">
+						<reportElement stretchType="ContainerBottom" x="0" y="0" width="180" height="10" uuid="b9de5c88-e3ef-4be0-84d7-a3be3b226b42"/>
+						<box topPadding="1" bottomPadding="1" rightPadding="2">
+							<leftPen lineWidth="0.5"/>
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[$R{SaleOrder.totalExclTaxWithoutDiscount}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement stretchType="ContainerBottom" x="180" y="0" width="86" height="10" uuid="fc093647-e20a-4bc9-b206-2c58dd40ba32"/>
+						<box topPadding="1" bottomPadding="1" rightPadding="2">
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.amount}, $V{SaleOrderTotalWithoutDiscount}, $P{SALE_ORDER_INFO}.get("CurrencyCode"))]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="10" width="266" height="10" isRemoveLineWhenBlank="true" uuid="b5eb7282-af11-4a58-95f2-16c29c879997">
+						<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT}]]></printWhenExpression>
+					</reportElement>
+					<box rightPadding="0"/>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" stretchType="ContainerBottom" x="0" y="0" width="180" height="10" uuid="97860fb8-eeb9-427f-aeef-c42c34a3459d"/>
+						<box topPadding="1" bottomPadding="1" rightPadding="2">
+							<leftPen lineWidth="0.5"/>
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[$R{SaleOrder.totalDiscount}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" stretchType="ContainerBottom" x="180" y="0" width="86" height="10" uuid="078ab2db-85ea-4aa8-9211-3d113fb25c99"/>
+						<box topPadding="1" bottomPadding="1" rightPadding="2">
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.amount}, $V{SaleOrderTotalDiscount}, $P{SALE_ORDER_INFO}.get("CurrencyCode"))]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="20" width="266" height="10" uuid="3d5638c0-2825-4e31-a065-8f2f1a0c387b"/>
+					<box rightPadding="0"/>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" stretchType="ContainerBottom" x="0" y="0" width="180" height="10" uuid="be40fdfd-2b60-4bd6-93c6-b44786427187"/>
+						<box topPadding="1" bottomPadding="1" rightPadding="2">
+							<leftPen lineWidth="0.5"/>
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[$R{SaleOrder.totalExclTax}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="180" y="0" width="86" height="10" uuid="4db16631-fdc4-4508-895a-f0d7361b58d2"/>
+						<box topPadding="1" bottomPadding="1" rightPadding="2">
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.amount}, $P{SALE_ORDER_INFO}.get("ExTaxTotal"), $P{SALE_ORDER_INFO}.get("CurrencyCode"))]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="30" width="266" height="10" uuid="d0bbc52d-7709-4214-a203-d57141710e48"/>
+					<box rightPadding="0"/>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" stretchType="ContainerBottom" x="0" y="0" width="180" height="10" uuid="c39c396b-873e-48e6-ab83-ba7344093061"/>
+						<box topPadding="1" bottomPadding="1" rightPadding="2">
+							<leftPen lineWidth="0.5"/>
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[$R{SaleOrder.totalTax}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="180" y="0" width="86" height="10" uuid="d8f985bb-f0f8-459c-b6e4-4d97d116b962"/>
+						<box topPadding="1" bottomPadding="1" rightPadding="2">
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Right"/>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.amount}, $P{SALE_ORDER_INFO}.get("TaxTotal"), $P{SALE_ORDER_INFO}.get("CurrencyCode"))]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement positionType="Float" x="0" y="40" width="266" height="10" uuid="b740f784-69b0-4eab-8857-c3cea4992813"/>
+					<box rightPadding="0">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" stretchType="ContainerBottom" x="0" y="0" width="180" height="10" uuid="24dd44b3-bd9b-470a-9b4b-2b380eba0d98"/>
+						<box topPadding="1" bottomPadding="1" rightPadding="2">
+							<topPen lineWidth="0.5"/>
+							<leftPen lineWidth="0.5"/>
+							<bottomPen lineWidth="0.5"/>
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Right">
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$R{SaleOrder.totalInclTax}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="180" y="0" width="86" height="10" uuid="b4200150-dd19-47e1-aee4-947efdafadaf"/>
+						<box topPadding="1" bottomPadding="1" rightPadding="2">
+							<topPen lineWidth="0.5"/>
+							<bottomPen lineWidth="0.5"/>
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Right">
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{SaleOrder.amount}, $P{SALE_ORDER_INFO}.get("InTaxTotal"), $P{SALE_ORDER_INFO}.get("CurrencyCode"))]]></textFieldExpression>
+					</textField>
+				</frame>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="190" y="70" width="364" height="10" uuid="f899d9bb-c1df-4e22-a6a7-35d564ea9b40">
+					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{SALE_ORDER_INFO}.get("BankAddress")) == false]]></printWhenExpression>
+				</reportElement>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="0" width="168" height="10" uuid="209a24fd-7e43-4007-a852-45199608d002"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{SaleOrder.bank}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="168" y="0" width="196" height="10" uuid="c5353b00-e518-426b-a382-fb9ae07e9420"/>
+					<box leftPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{SALE_ORDER_INFO}.get("BankAddress")]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="190" y="80" width="364" height="10" uuid="94cdd5e3-65e8-4ef0-8a67-875fff9a3fd8">
+					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{SALE_ORDER_INFO}.get("IBAN")) == false]]></printWhenExpression>
+				</reportElement>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="0" width="168" height="10" uuid="34a6b6ce-3f4d-4a83-8cac-716e3bf82dd0"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{SaleOrder.iban}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="168" y="0" width="196" height="10" uuid="8c5c6f9c-f690-4e99-9485-b27a3d6b3cd0"/>
+					<box leftPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[((String)$P{SALE_ORDER_INFO}.get("IBAN")).replaceAll("(.{4})", "$1 ")]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="190" y="90" width="364" height="10" uuid="b8aeb61f-9148-48d0-8335-0d1d3ecd4871">
+					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{SALE_ORDER_INFO}.get("BIC")) == false]]></printWhenExpression>
+				</reportElement>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="0" width="168" height="10" uuid="bc269591-eb78-491f-83ff-ad594df33755"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{SaleOrder.bic}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="168" y="0" width="196" height="10" uuid="2ff4be0a-53d9-4dc0-87be-378e65728b77"/>
+					<box leftPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{SALE_ORDER_INFO}.get("BIC")]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="105" width="555" height="15" isRemoveLineWhenBlank="true" uuid="d0b6e423-e63f-4fa5-9b64-d9dc530d115c">
+					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{SALE_ORDER_INFO}.get("LegalNote")) == false]]></printWhenExpression>
+				</reportElement>
+				<textElement markup="html">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SALE_ORDER_INFO}.get("LegalNote")]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement positionType="Float" x="0" y="130" width="555" height="30" isRemoveLineWhenBlank="true" uuid="fe3edc75-0731-4100-871f-8d1ebdf91222">
+					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{SALE_ORDER_INFO}.get("Description")) == false]]></printWhenExpression>
+				</reportElement>
+				<textField>
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="555" height="15" uuid="f6d21959-3626-4d2f-85af-1dc5260f270b">
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[(String)$P{SALE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{SaleOrder.note}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="15" width="555" height="15" uuid="1bf34a74-9c62-4c26-8706-3f67bc427b38"/>
+					<textElement markup="html"/>
+					<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{SALE_ORDER_INFO}.get("Description"))]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="170" width="275" height="30" isRemoveLineWhenBlank="true" uuid="59cbcfec-f188-44cb-b2f8-3a0da584d181">
+					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{SALE_ORDER_INFO}.get("ClientBox")) == false]]></printWhenExpression>
+				</reportElement>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{SALE_ORDER_INFO}.get("ClientBox"))]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement positionType="Float" x="280" y="170" width="275" height="69" uuid="dbf26390-b377-46be-8c48-aca0e32f1682">
+					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{SALE_ORDER_INFO}.get("SalemanSignaturePath")) == false]]></printWhenExpression>
+				</reportElement>
+				<image hAlign="Center" vAlign="Middle">
+					<reportElement x="224" y="0" width="50" height="50" uuid="eac46173-337a-41b4-ba55-716edf76b038"/>
+					<imageExpression><![CDATA[$P{ATTACHMENT_PATH} + $P{SALE_ORDER_INFO}.get("SalemanSignaturePath")]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="50" width="274" height="19" uuid="fab4cd3b-8642-4cf2-895b-67913b1e3523"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{SALE_ORDER_INFO}.get("SalemanName")]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</summary>
+</jasperReport>
