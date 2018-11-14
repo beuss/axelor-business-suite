@@ -153,7 +153,7 @@ Move.company = AccountingReport.company AND
 (AccountingReport.period IS NULL OR AccountingReport.period  = Move.period) AND
 (AccountingReport.journal IS NULL OR AccountingReport.journal  = Move.journal) AND
 (AccountingReport.payment_mode IS  NULL OR (AccountingReport.payment_mode = Move.payment_mode)) AND
-Move.ignore_in_accounting_ok = false AND (Move.status_select = 3 OR (Move.status_select = 2 AND AccountConfig.accounting_daybook = true))
+Move.ignore_in_accounting_ok = false AND (Move.status_select = 3 OR Move.status_select = 2)
 
 order by first_level_account_code, second_level_account_code, account, MoveLine.date_val, MoveLine.name]]>
 	</queryString>
