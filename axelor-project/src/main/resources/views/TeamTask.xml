@@ -20,9 +20,9 @@
 		onLoad="action-team-task-group-timer-process" width="large">
 		<toolbar>
 			<button name="grabEventBtn" icon="fa-suitcase" help="Take charge" onClick="action-team-task-record-assigned-yourself,save"/>
-			<button name="startBtn" icon="fa-play" onClick="action-team-task-record-status-in-progress,save"/>
-			<button name="acceptBtn" icon="fa-check" onClick="action-team-task-record-status-closed,save"/>
-			<button name="stopBtn" icon="fa-power-off" onClick="action-team-task-record-status-canceled,save"/>
+			<button name="startBtn" icon="fa-play" help="Start" onClick="action-team-task-record-status-in-progress,save"/>
+			<button name="acceptBtn" icon="fa-check" help="Mark as done" onClick="action-team-task-record-status-closed,save"/>
+			<button name="stopBtn" icon="fa-power-off" help="Cancel task" onClick="action-team-task-record-status-canceled,save"/>
 		</toolbar>
 		<menubar>
 	        <menu name="teamTaskMenu" title="Tools">   
