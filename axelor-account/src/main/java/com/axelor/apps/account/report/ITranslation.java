@@ -65,6 +65,53 @@ public interface ITranslation {
   public static final String INVOICE_IMPUTED_ON = /*$$(*/ "Invoice.imputedOn"; /*)*/
   public static final String INVOICE_TOTAL_TO_PAY = /*$$(*/ "Invoice.totalToPay"; /*)*/
   public static final String INVOICE_CANCEL_INVOICE_NO = /*$$(*/ "Invoice.cancelInvoiceNo"; /*)*/
+  public static final String INVOICE_PURCHASE_INVOICE_NO_TITLE = /*$$(*/
+      "Invoice.purchaseInvoiceNoTitle"; /*)*/
+  public static final String INVOICE_PURCHASE_INVOICE_ADV_PAYMENT_NO_TITLE = /*$$(*/
+      "Invoice.purchaseInvoiceAdvPaymentNoTitle"; /*)*/
+  public static final String INVOICE_PURCHASE_INVOICE_BALANCE_NO_TITLE = /*$$(*/
+      "Invoice.purchaseInvoiceBalanceNoTitle"; /*)*/
+  public static final String INVOICE_PURCHASE_REFUND_NO_TITLE = /*$$(*/
+      "Invoice.purchaseRefundNoTitle"; /*)*/
+  public static final String INVOICE_INVOICE_NO_TITLE = /*$$(*/ "Invoice.invoiceNoTitle"; /*)*/
+  public static final String INVOICE_INVOICE_ADV_PAYMENT_NO_TITLE = /*$$(*/
+      "Invoice.invoiceAdvPaymentNoTitle"; /*)*/
+  public static final String INVOICE_INVOICE_BALANCE_NO_TITLE = /*$$(*/
+      "Invoice.invoiceBalanceNoTitle"; /*)*/
+  public static final String INVOICE_DRAFT_INVOICE_NO_TITLE = /*$$(*/
+      "Invoice.draftInvoiceNoTitle"; /*)*/
+  public static final String INVOICE_REFUND_NO_TITLE = /*$$(*/ "Invoice.refundNoTitle"; /*)*/
+  public static final String INVOICE_ADVANCE_PAYMENT_DATE_TITLE = /*$$(*/
+      "Invoice.advancePaymentDateTitle"; /*)*/
+  public static final String INVOICE_ADVANCE_PAYMENT_IMPUTED_AMOUNT_TITLE = /*$$(*/
+      "Invoice.advancePaymentImputedAmountTitle"; /*)*/
+  public static final String INVOICE_ADVANCE_PAYMENT_INVOICE_ID_TITLE_ = /*$$(*/
+      "Invoice.advancePaymentInvoiceIdTitle"; /*)*/
+  public static final String INVOICE_ADVANCE_PAYMENT_TOTAL_AMOUNT_TITLE = /*$$(*/
+      "Invoice.advancePaymentTotalAmountTitle"; /*)*/
+  public static final String INVOICE_AMOUNT = /*$$(*/ "Invoice.amount"; /*)*/
+  public static final String INVOICE_BANK = /*$$(*/ "Invoice.bank"; /*)*/
+  public static final String INVOICE_BIC = /*$$(*/ "Invoice.bic"; /*)*/
+  public static final String INVOICE_COMPANY_CUSTOMER_TITLE = /*$$(*/
+      "Invoice.companyCustomerTitle"; /*)*/
+  public static final String INVOICE_DUE_DATE_TITLE = /*$$(*/ "Invoice.dueDateTitle"; /*)*/
+  public static final String INVOICE_EXTERNAL_REFERENCE_TITLE = /*$$(*/
+      "Invoice.externalReferenceTitle"; /*)*/
+  public static final String INVOICE_IBAN = /*$$(*/ "Invoice.iban"; /*)*/
+  public static final String INVOICE_INDIVIDUAL_CUSTOMER_TITLE = /*$$(*/
+      "Invoice.individualCustomerTitle"; /*)*/
+  public static final String INVOICE_INTERNAL_REFERENCE_TITLE = /*$$(*/
+      "Invoice.internalReferenceTitle"; /*)*/
+  public static final String INVOICE_INVOICE_DATE_TITLE = /*$$(*/ "Invoice.invoiceDateTitle"; /*)*/
+  public static final String INVOICE_INVOICE_DRAFT_NO = /*$$(*/ "Invoice.invoiceDraftNo"; /*)*/
+  public static final String INVOICE_PAYMENT_CONDITION_TITLE = /*$$(*/
+      "Invoice.paymentConditionTitle"; /*)*/
+  public static final String INVOICE_PAYMENT_MODE_TITLE = /*$$(*/ "Invoice.paymentModeTitle"; /*)*/
+  public static final String INVOICE_PRODUCT_DESCRIPTION = /*$$(*/
+      "Invoice.productDescription"; /*)*/
+  public static final String INVOICE_QTY_UNIT_DETAILS = /*$$(*/ "Invoice.qtyUnitDetails"; /*)*/
+  public static final String INVOICE_SUBSCRIPTION_PERIOD_TITLE = /*$$(*/
+      "Invoice.subscriptionPeriodTitle"; /*)*/
 
   public static final String INVOICE_TIMESHEET_TITLE = /*$$(*/ "Invoice.timesheetTitle"; /*)*/
   public static final String INVOICE_EXPENSE_TITLE = /*$$(*/ "Invoice.expenseTitle"; /*)*/
