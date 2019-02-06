@@ -1607,9 +1607,10 @@ msg($R{Invoice.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getString((S
 					</textElement>
 					<textFieldExpression><![CDATA[$R{Invoice.termsAndConditions}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isStretchWithOverflow="true">
 					<reportElement x="0" y="16" width="555" height="15" uuid="2ee00ad4-1b68-40b3-a620-71826dd00a30"/>
-					<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix($P{TERMS_AND_CONDITIONS})]]></textFieldExpression>
+					<textElement markup="html"/>
+					<textFieldExpression><![CDATA[$P{TERMS_AND_CONDITIONS}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
