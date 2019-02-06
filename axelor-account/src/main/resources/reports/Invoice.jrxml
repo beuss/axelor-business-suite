@@ -192,7 +192,7 @@ InvoiceLine.ex_tax_total as "ExTaxTotal",
 InvoiceLine.in_tax_total as "InTaxTotal",
 Currency.code as "CurrencyCode",
 InvoiceLine.sequence as "Sequence",
-InvoiceLine.is_title_line as "IsTitleLine",
+InvoiceLine.type_select = 1 as "IsTitleLine",
 InvoiceLine.product_code as "ProductCode"
 from account_invoice_line as InvoiceLine
 inner join account_invoice as Invoice on (InvoiceLine.invoice = Invoice.id)
