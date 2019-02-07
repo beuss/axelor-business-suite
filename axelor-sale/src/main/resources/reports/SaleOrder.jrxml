@@ -140,7 +140,7 @@ where SOLineTax.sale_order = $P{SALE_ORDER_ID}]]>
 	SaleOrder.sale_order_type_select, 
 	SaleOrder.in_ati,
 	Product.product_type_select,
-	SOLine.type_select != 0 as is_title_line
+	SOLine.type_select = 1 as is_title_line
 from sale_sale_order as SaleOrder
 left outer join sale_sale_order_line as SOLine on (SOLine.sale_order = SaleOrder.id)
 left outer join base_product as Product on (SOLine.product = Product.id)
