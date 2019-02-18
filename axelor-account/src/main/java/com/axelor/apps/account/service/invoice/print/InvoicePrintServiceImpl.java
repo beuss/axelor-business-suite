@@ -173,7 +173,8 @@ public class InvoicePrintServiceImpl implements InvoicePrintService {
     }
 
     ReportSettings reportSetting =
-        ReportFactory.createReport(IReport.INVOICE, title + " - ${date}");
+        ReportFactory.createReport(
+            "accountInvoice", invoice.getCompany(), IReport.INVOICE, title + " - ${date}");
 
     return reportSetting
         .addParam("InvoiceId", invoice.getId())

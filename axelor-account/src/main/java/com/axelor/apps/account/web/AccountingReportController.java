@@ -213,7 +213,10 @@ public class AccountingReportController {
 
         String fileLink =
             ReportFactory.createReport(
-                    String.format(IReport.ACCOUNTING_REPORT_TYPE, typeSelect), name + "-${date}")
+                    String.format("accountAccountingReportType%d", typeSelect),
+                    accountingReport.getCompany(),
+                    String.format(IReport.ACCOUNTING_REPORT_TYPE, typeSelect),
+                    name + "-${date}")
                 .addParam("AccountingReport", accountingReport)
                 .addParam("Company", accountingReport.getCompany())
                 .addParam("AccountingReportId", accountingReport.getId())
