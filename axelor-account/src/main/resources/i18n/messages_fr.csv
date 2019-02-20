@@ -1943,7 +1943,7 @@
 "account.ledger.period","Du {0} au {1}",,
 "account.ledger.print_date","Date d''édition : {0}",,
 "account.ledger.title","GRAND LIVRE COMPTABLE",,
-"account.ledger.to","Jusqu'au {0}",,
+"account.ledger.to","Jusqu''au {0}",,
 "account.ledger.total","Total",,
 "com.axelor.apps.account.service.batch.AccountingBatchService",,,
 "degressive","Dégressif",,
