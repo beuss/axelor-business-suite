@@ -34,7 +34,7 @@ where SOLineTax.sale_order = $P{SALE_ORDER_ID}]]>
 "Company.name as \"CompanyName\", coalesce(MetaFileTN.file_path, MetaFile.file_path) as \"LogoPath\", " +
 "ClientPartner.partner_type_select as \"ClientPartTypeSelect\", ClientPartner.name as \"ClientPartName\", " +
 "ClientPartner.first_name as \"ClientPartFirstName\", MetaSelectItemTitle.title as \"ClientPartTitle\", " +
-"ContactPartner.full_name as \"ContactFullName\", " +
+"ContactPartner.simple_full_name as \"ContactFullName\", " +
 "InvoicingCountry.name as \"invoicecountry\", DeliveryCountry.name as \"DeliveryCountry\", " +
 "SaleOrder.main_invoicing_address_str as \"InvoicingAddress\", " +
 "SaleOrder.delivery_address_str as \"DeliveryAddress\", " +
