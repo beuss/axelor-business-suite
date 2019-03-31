@@ -31,11 +31,14 @@ import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.i18n.I18n;
 import com.axelor.inject.Beans;
+import com.axelor.meta.MetaFiles;
+import com.axelor.meta.db.MetaFile;
 import com.google.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SaleOrderPrintServiceImpl implements SaleOrderPrintService {
@@ -67,7 +70,17 @@ public class SaleOrderPrintServiceImpl implements SaleOrderPrintService {
 
   public File print(SaleOrder saleOrder, boolean proforma, String format) throws AxelorException {
     ReportSettings reportSettings = prepareReportSettings(saleOrder, proforma, format);
-    return reportSettings.generate().getFile();
+    File printedOrder = reportSettings.generate().getFile();
+    MetaFile additionalFile = saleOrder.getCompany().getSaleConfig().getSaleOrderAdditionalFile();
+    if (additionalFile != null) {
+      try {
+        return PdfTool.mergePdf(
+            Arrays.asList(printedOrder, MetaFiles.getPath(additionalFile).toFile()));
+      } catch (IOException ioe) {
+        // Ignore
+      }
+    }
+    return printedOrder;
   }
 
   @Override
