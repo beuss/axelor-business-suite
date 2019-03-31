@@ -7,7 +7,7 @@
 		<field name="company" form-view="company-form" grid-view="company-grid"/>
 	</grid>
 
-	<form name="account-config-form" title="Account configuration" model="com.axelor.apps.account.db.AccountConfig" onNew="action-account-config-record-default" width="large">
+	<form name="account-config-form" title="Account configuration" model="com.axelor.apps.account.db.AccountConfig" onNew="action-account-config-record-default" onSave="action-validate-account-config-sale-invoice-additional-file" width="large">
 		<toolbar>
 			<button name="showInvoiceBtn" title="Invoices" onClick="save,action-company-view-invoice"/>
 		</toolbar>
@@ -121,6 +121,7 @@
 					<field name="displayPartnerSeqOnPrinting" widget="boolean-switch"/>
 					<field name="displayTimesheetOnPrinting" widget="boolean-switch" if-module="axelor-business-project" if="__config__.app.isApp('business-project') &amp;&amp;  __config__.app.isApp('timesheet')"/>
 					<field name="displayExpenseOnPrinting" widget="boolean-switch" if-module="axelor-business-project" if="__config__.app.isApp('business-project') &amp;&amp;  __config__.app.isApp('expense')"/>
+					<field name="saleInvoiceAdditionalFile" widget="binary-link" canNew="true" canEdit="true"/>
 					<field name="invoiceClientBox" widget="html" x-lite="true" colSpan="12"/>
 					<field name="saleInvoiceLegalNote" widget="html" x-lite="true" colSpan="12"/>
 					<field name="termsAndConditions" widget="html" colSpan="12"/>
@@ -276,5 +277,9 @@
 		<context name="_showRecord" expr="eval: __self__.accountConfig?.id"/>
 		<context name="_company" expr="eval: __this__"/>
 	</action-view>
+
+	<action-validate name="action-validate-account-config-sale-invoice-additional-file">
+		<error if="saleInvoiceAdditionalFile?.fileName.toLowerCase().endsWith(&quot;.pdf&quot;) == false" message="Only PDF files can be appended to sale invoices"/>
+	</action-validate>
 
 </object-views>

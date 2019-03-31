@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /** Implementation of the service printing invoices. */
@@ -91,8 +92,7 @@ public class InvoicePrintServiceImpl implements InvoicePrintService {
   }
 
   public File print(Invoice invoice) throws AxelorException {
-    ReportSettings reportSettings = prepareReportSettings(invoice);
-    return reportSettings.generate().getFile();
+    return generateInvoice(invoice, prepareReportSettings(invoice));
   }
 
   public File printAndSave(Invoice invoice) throws AxelorException {
@@ -101,7 +101,7 @@ public class InvoicePrintServiceImpl implements InvoicePrintService {
     MetaFile metaFile;
 
     reportSettings.toAttach(invoice);
-    File file = reportSettings.generate().getFile();
+    File file = generateInvoice(invoice, reportSettings);
 
     try {
       MetaFiles metaFiles = Beans.get(MetaFiles.class);
@@ -194,5 +194,33 @@ public class InvoicePrintServiceImpl implements InvoicePrintService {
         + " - "
         + Beans.get(AppBaseService.class).getTodayDate().format(DateTimeFormatter.BASIC_ISO_DATE)
         + ".pdf";
+  }
+
+  /**
+   * Generate invoice copy taking care of the additional file configuration.
+   *
+   * @param invoice Invoice to be printed (must be the same as the one bound to reportSettings)
+   * @param reportSettings Report settings used to print invoice, must be ready to generate.
+   * @return The file containing the generated invoice, with optional additional file appended.
+   * @throws AxelorException If something goes wrong.
+   */
+  protected File generateInvoice(Invoice invoice, ReportSettings reportSettings)
+      throws AxelorException {
+    if (invoice.getOperationTypeSelect() != InvoiceRepository.OPERATION_TYPE_CLIENT_SALE
+        && invoice.getOperationTypeSelect() != InvoiceRepository.OPERATION_TYPE_CLIENT_REFUND) {
+      return reportSettings.generate().getFile();
+    }
+    File printedInvoice = reportSettings.generate().getFile();
+    MetaFile additionalFile =
+        invoice.getCompany().getAccountConfig().getSaleInvoiceAdditionalFile();
+    if (additionalFile != null) {
+      try {
+        return PdfTool.mergePdf(
+            Arrays.asList(printedInvoice, MetaFiles.getPath(additionalFile).toFile()));
+      } catch (IOException ioe) {
+        // Ignore
+      }
+    }
+    return printedInvoice;
   }
 }

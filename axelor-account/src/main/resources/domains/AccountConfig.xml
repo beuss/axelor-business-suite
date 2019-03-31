@@ -144,6 +144,7 @@
 		<boolean name="displayPartnerSeqOnPrinting" title="Display partner sequence on printing"/>
 		<string name="invoiceClientBox" large="true" multiline="true" title="Client box in invoice"/>
 		<string name="saleInvoiceLegalNote" large="true" multiline="true" title="Legal note on sale invoices" help="Short legal note to be displayed on sale invoices"/>
+		<many-to-one name="saleInvoiceAdditionalFile" ref="com.axelor.meta.db.MetaFile" title="PDF file to be appended to sale invoices"/>
 
 		<string name="termsAndConditions" large="true" title="Terms and Conditions"/>
 

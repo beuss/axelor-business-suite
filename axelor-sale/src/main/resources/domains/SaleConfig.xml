@@ -12,6 +12,7 @@
 		<integer name="saleOrderInAtiSelect" title="Sale orders ATI/WT" selection="base.in.ati.select" default="1"/>
 		<string name="saleOrderClientBox" large="true" multiline="true" title="Client box in sale order"/>
 		<string name="saleOrderLegalNote" large="true" multiline="true" title="Legal note on sale order" help="Short legal note to be displayed on sales order"/>
+		<many-to-one name="saleOrderAdditionalFile" ref="com.axelor.meta.db.MetaFile" title="File to be appended to sale orders" help="PDF file automatically appended to every printed sale order."/>
 		<boolean name="displaySalemanOnPrinting" title="Display saleman on printing"/>
 		<boolean name="displayDelCondOnPrinting" title="Display delivery condition on printing"/>
 		<boolean name="displayProductCodeOnPrinting" title="Display product code on printing"/>

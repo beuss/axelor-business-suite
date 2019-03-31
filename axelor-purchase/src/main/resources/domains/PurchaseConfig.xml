@@ -15,11 +15,13 @@
 	<boolean name="displayBuyerOnPrinting" title="Display buyer on printing"/>
 	<boolean name="displayProductCodeOnPrinting" title="Display product code on printing"/>
 	<boolean name="displayTaxDetailOnPrinting" title="Display tax detail on printing"/>
-		<boolean name="displaySupplierCodeOnPrinting" title="Display supplier code on printing"/>
+	<boolean name="displaySupplierCodeOnPrinting" title="Display supplier code on printing"/>
   	<boolean name="displayProductDetailOnPrinting" title="Display product detail on printing"/>
-  	
+    <many-to-one name="purchaseOrderAdditionalFile" ref="com.axelor.meta.db.MetaFile" title="File to be appended to purchase orders" help="PDF file automatically appended to every printed purchase order."/>
+
   	<string name="priceRequest" title="Message for requesting prices" large="true"/>
     <boolean name="isAnalyticDistributionRequired" title="Analytic distribution required on purchase order line"/>
+
   	<track>
   		<field name="company" on="UPDATE"/>
   		<field name="purchaseOrderInAtiSelect" on="UPDATE"/>
@@ -34,5 +36,5 @@
   		<field name="isAnalyticDistributionRequired" on="UPDATE"/>
   	</track>
   </entity>
-  
+
 </domain-models>
