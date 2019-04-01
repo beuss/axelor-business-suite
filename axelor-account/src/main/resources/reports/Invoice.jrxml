@@ -1046,7 +1046,7 @@ msg($R{Invoice.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getString((S
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="299" splitType="Immediate">
+		<band height="201" splitType="Immediate">
 			<frame>
 				<reportElement x="0" y="63" width="270" height="30" uuid="470bdeff-3d7f-4a8a-9b3f-2b78bcb9d4f5">
 					<printWhenExpression><![CDATA[$P{SHOW_TAX}]]></printWhenExpression>
@@ -1425,20 +1425,22 @@ msg($R{Invoice.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getString((S
 				</textField>
 			</frame>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="173" width="555" height="15" isRemoveLineWhenBlank="true" uuid="d0b6e423-e63f-4fa5-9b64-d9dc530d115c">
+				<reportElement positionType="Float" x="0" y="175" width="555" height="5" isRemoveLineWhenBlank="true" uuid="d0b6e423-e63f-4fa5-9b64-d9dc530d115c">
 					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{INVOICE_INFO}.get("LegalNote")) == false]]></printWhenExpression>
 				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="15" rightPadding="0"/>
 				<textElement markup="html">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{INVOICE_INFO}.get("LegalNote")]]></textFieldExpression>
 			</textField>
 			<frame>
-				<reportElement positionType="Float" x="0" y="180" width="555" height="30" isRemoveLineWhenBlank="true" printWhenGroupChanges="Group1" uuid="fe3edc75-0731-4100-871f-8d1ebdf91222">
+				<reportElement positionType="Float" x="0" y="180" width="555" height="10" isRemoveLineWhenBlank="true" uuid="fe3edc75-0731-4100-871f-8d1ebdf91222">
 					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{INVOICE_INFO}.get("InvoiceNote")) == false]]></printWhenExpression>
 				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="5" rightPadding="0"/>
 				<textField>
-					<reportElement positionType="Float" mode="Opaque" x="0" y="18" width="555" height="15" uuid="f6d21959-3626-4d2f-85af-1dc5260f270b">
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="555" height="5" uuid="f6d21959-3626-4d2f-85af-1dc5260f270b">
 						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[(String)$P{INVOICE_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -1447,15 +1449,16 @@ msg($R{Invoice.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getString((S
 					<textFieldExpression><![CDATA[$R{Invoice.note}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" x="0" y="33" width="555" height="15" uuid="1bf34a74-9c62-4c26-8706-3f67bc427b38"/>
+					<reportElement positionType="Float" x="0" y="5" width="555" height="5" uuid="1bf34a74-9c62-4c26-8706-3f67bc427b38"/>
 					<textElement markup="html"/>
 					<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{INVOICE_INFO}.get("InvoiceNote"))]]></textFieldExpression>
 				</textField>
 			</frame>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="238" width="275" height="30" isRemoveLineWhenBlank="true" uuid="59cbcfec-f188-44cb-b2f8-3a0da584d181">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="190" width="555" height="5" isRemoveLineWhenBlank="true" uuid="59cbcfec-f188-44cb-b2f8-3a0da584d181">
 					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{INVOICE_INFO}.get("ClientBox")) == false]]></printWhenExpression>
 				</reportElement>
+				<box bottomPadding="5"/>
 				<textElement markup="html"/>
 				<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{INVOICE_INFO}.get("ClientBox"))]]></textFieldExpression>
 			</textField>
@@ -1592,14 +1595,14 @@ msg($R{Invoice.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getString((S
 				</componentElement>
 			</frame>
 			<frame>
-				<reportElement x="0" y="268" width="555" height="31" uuid="0d7bc1e2-89b6-415b-ba3e-b0bbd558719c">
+				<reportElement positionType="Float" x="0" y="190" width="555" height="11" isRemoveLineWhenBlank="true" uuid="0d7bc1e2-89b6-415b-ba3e-b0bbd558719c">
 					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank($P{TERMS_AND_CONDITIONS}) == false]]></printWhenExpression>
 				</reportElement>
 				<break>
 					<reportElement positionType="Float" x="0" y="0" width="99" height="1" uuid="7fd2db4d-70b6-4403-b870-752bd8608ceb"/>
 				</break>
 				<textField>
-					<reportElement positionType="Float" mode="Opaque" x="0" y="1" width="555" height="15" uuid="0c7ab2d7-ff24-472b-8104-ec8dc178a37a">
+					<reportElement positionType="Float" mode="Opaque" x="0" y="1" width="555" height="5" uuid="0c7ab2d7-ff24-472b-8104-ec8dc178a37a">
 						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[(String)$P{INVOICE_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -1608,7 +1611,7 @@ msg($R{Invoice.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getString((S
 					<textFieldExpression><![CDATA[$R{Invoice.termsAndConditions}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
-					<reportElement x="0" y="16" width="555" height="15" uuid="2ee00ad4-1b68-40b3-a620-71826dd00a30"/>
+					<reportElement x="0" y="6" width="555" height="5" uuid="2ee00ad4-1b68-40b3-a620-71826dd00a30"/>
 					<textElement markup="html"/>
 					<textFieldExpression><![CDATA[$P{TERMS_AND_CONDITIONS}]]></textFieldExpression>
 				</textField>
