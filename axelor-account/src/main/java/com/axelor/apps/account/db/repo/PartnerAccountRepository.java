@@ -48,7 +48,7 @@ public class PartnerAccountRepository extends PartnerBaseRepository {
     try {
 
       // ID is somehow set somewhere so we've to check another field
-      if (partner.getFullName() == null) {
+      if (partner.getId() == null || partner.getFullName() == null) {
         partner = super.save(partner);
       }
 
