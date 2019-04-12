@@ -337,7 +337,7 @@ public class AccountingSituationServiceImpl implements AccountingSituationServic
    * @return The generated account code.
    */
   protected String getPrefixedAccountCode(String prefix, Partner partner) {
-    return (prefix + StringUtils.stripAccent(partner.getFullName()))
+    return (prefix + StringUtils.stripAccent(partner.getSimpleFullName()))
         .toUpperCase()
         .replaceAll("[^A-Z]", "");
   }
