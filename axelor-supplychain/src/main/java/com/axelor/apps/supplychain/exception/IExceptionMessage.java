@@ -145,6 +145,9 @@ public interface IExceptionMessage {
   static final String PO_MISSING_STOCK_LOCATION = /*$$(*/
       "Stock location is missing for the purchase order %s." /*)*/;
 
+  static final String POL_MISSING_DELIVERY_DATE = /*$$(*/
+      "Delivery date is missing for the purchase order %s on line %d." /*)*/;
+
   /** Timetable Controller */
   static final String TIMETABLE_INVOICE_ALREADY_GENERATED = /*$$(*/
       "The invoice has already been generated." /*)*/;

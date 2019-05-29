@@ -50,6 +50,7 @@ import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.i18n.I18n;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -100,6 +101,7 @@ public class PurchaseOrderStockServiceImpl implements PurchaseOrderStockService 
    * @param purchaseOrder une commande
    * @throws AxelorException Aucune séquence de StockMove n'a été configurée
    */
+  @Transactional
   public List<Long> createStockMoveFromPurchaseOrder(PurchaseOrder purchaseOrder)
       throws AxelorException {
 
@@ -276,7 +278,7 @@ public class PurchaseOrderStockServiceImpl implements PurchaseOrderStockService 
   }
 
   protected Map<LocalDate, List<PurchaseOrderLine>> getAllPurchaseOrderLinePerDate(
-      PurchaseOrder purchaseOrder) {
+      PurchaseOrder purchaseOrder) throws AxelorException {
 
     Map<LocalDate, List<PurchaseOrderLine>> purchaseOrderLinePerDateMap = new HashMap<>();
 
@@ -291,6 +293,15 @@ public class PurchaseOrderStockServiceImpl implements PurchaseOrderStockService 
 
       if (dateKey == null) {
         dateKey = purchaseOrderLine.getPurchaseOrder().getDeliveryDate();
+      }
+
+      if (dateKey == null) {
+        throw new AxelorException(
+            purchaseOrder,
+            TraceBackRepository.CATEGORY_CONFIGURATION_ERROR,
+            I18n.get(IExceptionMessage.POL_MISSING_DELIVERY_DATE),
+            purchaseOrder.getPurchaseOrderSeq(),
+            purchaseOrderLine.getSequence());
       }
 
       List<PurchaseOrderLine> purchaseOrderLineLists = purchaseOrderLinePerDateMap.get(dateKey);
