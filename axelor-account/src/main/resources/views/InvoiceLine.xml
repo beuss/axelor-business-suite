@@ -386,6 +386,8 @@
 		<attribute name="hidden" for="priceDiscounted" expr="eval: priceDiscounted == inTaxPrice" if="__parent__?._model == 'com.axelor.apps.account.db.Invoice' &amp;&amp; __parent__?.inAti"/>
 		
 		<attribute name="required" for="analyticDistributionTemplate" expr="__parent__?.statusSelect &gt; 1 &amp;&amp; analyticMoveLineList.isEmpty() &amp;&amp; account?.analyticDistributionAuthorized &amp;&amp; account.analyticDistributionRequiredOnInvoiceLines" if="__config__.app.isApp('account') &amp;&amp; __config__.app.getApp('account').getManageAnalyticAccounting()" />
+
+		<attribute name="domain" for="purchaseOrderLine" expr="eval: &quot; self.purchaseOrder.supplierPartner = ${__parent__?.partner.id}&quot;"/>
 		
 	</action-attrs>
 
