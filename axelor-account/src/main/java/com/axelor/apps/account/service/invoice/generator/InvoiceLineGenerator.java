@@ -317,16 +317,16 @@ public abstract class InvoiceLineGenerator extends InvoiceLineManagement {
           company.getName());
     }
 
+    LocalDate d = invoice.getInvoiceDate() == null ? today : invoice.getInvoiceDate();
+
     invoiceLine.setCompanyExTaxTotal(
         currencyService
-            .getAmountCurrencyConvertedAtDate(
-                invoice.getCurrency(), companyCurrency, exTaxTotal, today)
+            .getAmountCurrencyConvertedAtDate(invoice.getCurrency(), companyCurrency, exTaxTotal, d)
             .setScale(AppBaseService.DEFAULT_NB_DECIMAL_DIGITS, RoundingMode.HALF_UP));
 
     invoiceLine.setCompanyInTaxTotal(
         currencyService
-            .getAmountCurrencyConvertedAtDate(
-                invoice.getCurrency(), companyCurrency, inTaxTotal, today)
+            .getAmountCurrencyConvertedAtDate(invoice.getCurrency(), companyCurrency, inTaxTotal, d)
             .setScale(AppBaseService.DEFAULT_NB_DECIMAL_DIGITS, RoundingMode.HALF_UP));
   }
 
