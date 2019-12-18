@@ -200,7 +200,8 @@ left outer join account_tax_line as TaxLine on (InvoiceLine.tax_line = TaxLine.i
 left outer join base_product as Product on (InvoiceLine.product = Product.id)
 left outer join base_unit as Unit on (InvoiceLine.unit = Unit.id)
 left outer join base_currency as Currency on (Invoice.currency = Currency.id)
-where Invoice.id = $P{INVOICE_ID}]]>
+where Invoice.id = $P{INVOICE_ID}
+order by InvoiceLine.sequence]]>
 	</queryString>
 	<field name="InvoiceId" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.label" value="InvoiceId"/>
