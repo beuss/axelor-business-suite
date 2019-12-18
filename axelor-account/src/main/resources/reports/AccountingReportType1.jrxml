@@ -146,6 +146,7 @@ where
 (AccountingReport.date_to IS NULL OR MoveLine.date_val <= AccountingReport.date_to) AND
 MoveLine.date_val <= AccountingReport.date_val AND
 Move.company = AccountingReport.company AND
+(Move.archived is NULL or Move.archived = false) AND
 (AccountSet.account_set IS NULL OR AccountSet.account_set = Account.id or AccountSet.account_set = ParentAccount.id 
     or AccountSet.account_set = ParentAccount2.id or AccountSet.account_set = ParentAccount3.id
     or AccountSet.account_set = ParentAccount4.id or AccountSet.account_set = ParentAccount5.id 
