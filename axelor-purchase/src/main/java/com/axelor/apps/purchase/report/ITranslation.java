@@ -94,4 +94,61 @@ public interface ITranslation {
       "PurchaseOrder.productStandard"; /*)*/
   public static final String PURCHASE_ORDER_PRODUCT_LINE_SEQUENCE = /*$$(*/
       "PurchaseOrder.productSequence"; /*)*/
+  public static final String PURCHASE_ORDER_AMOUNT = /*$$(*/ "PurchaseOrder.amount"; /*)*/
+  public static final String PURCHASE_ORDER_BUYEREMAILTITLE = /*$$(*/
+      "PurchaseOrder.buyerEmailTitle"; /*)*/
+  public static final String PURCHASE_ORDER_BUYERNAMETITLE = /*$$(*/
+      "PurchaseOrder.buyerNameTitle"; /*)*/
+  public static final String PURCHASE_ORDER_BUYERPHONETITLE = /*$$(*/
+      "PurchaseOrder.buyerPhoneTitle"; /*)*/
+  public static final String PURCHASE_ORDER_COMPANYCUSTOMERTITLE = /*$$(*/
+      "PurchaseOrder.companyCustomerTitle"; /*)*/
+  public static final String PURCHASE_ORDER_DELIVERYADDRESSTITLE = /*$$(*/
+      "PurchaseOrder.deliveryAddressTitle"; /*)*/
+  public static final String PURCHASE_ORDER_DELIVERYDATETITLE = /*$$(*/
+      "PurchaseOrder.deliveryDateTitle"; /*)*/
+  public static final String PURCHASE_ORDER_DESIREDDELIVERYDATETITLE = /*$$(*/
+      "PurchaseOrder.desiredDeliveryDateTitle"; /*)*/
+  public static final String PURCHASE_ORDER_DISCOUNTAMOUNT = /*$$(*/
+      "PurchaseOrder.discountAmount"; /*)*/
+  public static final String PURCHASE_ORDER_DRAFTTITLE = /*$$(*/ "PurchaseOrder.draftTitle"; /*)*/
+  public static final String PURCHASE_ORDER_ESTIMATEDDELIVERYDATETITLE = /*$$(*/
+      "PurchaseOrder.estimatedDeliveryDateTitle"; /*)*/
+  public static final String PURCHASE_ORDER_EXTERNALREFERENCETITLE = /*$$(*/
+      "PurchaseOrder.externalReferenceTitle"; /*)*/
+  public static final String PURCHASE_ORDER_INDIVIDUALCUSTOMERTITLE = /*$$(*/
+      "PurchaseOrder.individualCustomerTitle"; /*)*/
+  public static final String PURCHASE_ORDER_INVOICINGADDRESSTITLE = /*$$(*/
+      "PurchaseOrder.invoicingAddressTitle"; /*)*/
+  public static final String PURCHASE_ORDER_LINENUMBER = /*$$(*/ "PurchaseOrder.lineNumber"; /*)*/
+  public static final String PURCHASE_ORDER_ORDERDATETITLE = /*$$(*/
+      "PurchaseOrder.orderDateTitle"; /*)*/
+  public static final String PURCHASE_ORDER_ORDERTITLE = /*$$(*/ "PurchaseOrder.orderTitle"; /*)*/
+  public static final String PURCHASE_ORDER_PAYMENTCONDITIONTITLE = /*$$(*/
+      "PurchaseOrder.paymentConditionTitle"; /*)*/
+  public static final String PURCHASE_ORDER_PAYMENTMODETITLE = /*$$(*/
+      "PurchaseOrder.paymentModeTitle"; /*)*/
+  public static final String PURCHASE_ORDER_PRICEEXCLTAX = /*$$(*/
+      "PurchaseOrder.priceExclTax"; /*)*/
+  public static final String PURCHASE_ORDER_PRICEINCLTAX = /*$$(*/
+      "PurchaseOrder.priceInclTax"; /*)*/
+  public static final String PURCHASE_ORDER_PRODUCTCODE = /*$$(*/ "PurchaseOrder.productCode"; /*)*/
+  public static final String PURCHASE_ORDER_PRODUCTDESCRIPTION = /*$$(*/
+      "PurchaseOrder.productDescription"; /*)*/
+  public static final String PURCHASE_ORDER_QTYUNIT = /*$$(*/ "PurchaseOrder.qtyUnit"; /*)*/
+  public static final String PURCHASE_ORDER_QTYUNITDETAILS = /*$$(*/
+      "PurchaseOrder.qtyUnitDetails"; /*)*/
+  public static final String PURCHASE_ORDER_REQUESTTITLE = /*$$(*/
+      "PurchaseOrder.requestTitle"; /*)*/
+  public static final String PURCHASE_ORDER_TAXAMOUNT = /*$$(*/ "PurchaseOrder.taxAmount"; /*)*/
+  public static final String PURCHASE_ORDER_TOTALDISCOUNT = /*$$(*/
+      "PurchaseOrder.totalDiscount"; /*)*/
+  public static final String PURCHASE_ORDER_TOTALEXCLTAX = /*$$(*/
+      "PurchaseOrder.totalExclTax"; /*)*/
+  public static final String PURCHASE_ORDER_TOTALEXCLTAXWITHOUTDISCOUNT = /*$$(*/
+      "PurchaseOrder.totalExclTaxWithoutDiscount"; /*)*/
+  public static final String PURCHASE_ORDER_TOTALINCLTAX = /*$$(*/
+      "PurchaseOrder.totalInclTax"; /*)*/
+  public static final String PURCHASE_ORDER_TOTALTAX = /*$$(*/ "PurchaseOrder.totalTax"; /*)*/
+  public static final String PURCHASE_ORDER_UNITPRICE = /*$$(*/ "PurchaseOrder.unitPrice"; /*)*/
 }
