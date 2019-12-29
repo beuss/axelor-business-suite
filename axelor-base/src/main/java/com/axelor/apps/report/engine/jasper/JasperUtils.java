@@ -61,6 +61,7 @@ public class JasperUtils {
         .replaceAll("\\bfont-size\\s*:\\s*inherit\\b", "")
         .replaceAll("(?i)<p>\\s*<ul>|<(/)ul></p>", "<$1ul>")
         .replaceAll("(?i)<br/?>\\s*</(li|p)>", "</$1>")
+        .replaceAll("(?i)<br/?>$", "")
         .replaceAll("(?i)<p", "<p style=\"margin-top: 0; margin-bottom:0.1em\" ");
   }
 }
