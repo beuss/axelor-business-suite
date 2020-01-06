@@ -508,7 +508,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 	<columnHeader>
 		<band height="20">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="0" width="30" height="20" uuid="f7fc14ca-4b54-451e-93ee-c0ce1a379eaf">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="0" y="0" width="30" height="20" uuid="f7fc14ca-4b54-451e-93ee-c0ce1a379eaf">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber")]]></printWhenExpression>
 				</reportElement>
@@ -521,7 +521,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.lineNumber}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="30" y="0" width="50" height="20" uuid="9b5acae8-8428-432e-87c8-ba313a9c26f0">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="30" y="0" width="50" height="20" uuid="9b5acae8-8428-432e-87c8-ba313a9c26f0">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber")]]></printWhenExpression>
 				</reportElement>
@@ -534,7 +534,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.productCode}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="0" width="80" height="20" uuid="89631884-8190-4f4a-ae39-bbeafc05d50a">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="0" y="0" width="80" height="20" uuid="89631884-8190-4f4a-ae39-bbeafc05d50a">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber") == false]]></printWhenExpression>
 				</reportElement>
@@ -547,7 +547,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.productCode}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="0" width="323" height="20" uuid="6436acf0-0a5c-4e65-9f33-5ae834f2e88f">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="0" y="0" width="323" height="20" uuid="6436acf0-0a5c-4e65-9f33-5ae834f2e88f">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber") == false && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") == false && $P{SHOW_TAX} == false]]></printWhenExpression>
 				</reportElement>
@@ -560,7 +560,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.productDescription}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="0" width="280" height="20" uuid="aa50b50f-860b-449d-babb-ff3c49d5cf96">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="0" y="0" width="280" height="20" uuid="aa50b50f-860b-449d-babb-ff3c49d5cf96">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber") == false && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") == false && $P{SHOW_TAX}]]></printWhenExpression>
 				</reportElement>
@@ -573,7 +573,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.productDescription}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="30" y="0" width="293" height="20" uuid="29b4092b-a1d9-4880-ac25-7740795b9763">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="30" y="0" width="293" height="20" uuid="29b4092b-a1d9-4880-ac25-7740795b9763">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber") && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") == false && $P{SHOW_TAX} == false]]></printWhenExpression>
 				</reportElement>
@@ -586,7 +586,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.productDescription}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="30" y="0" width="250" height="20" uuid="c8755dc0-7c92-461c-ab52-6c31ff26f58b">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="30" y="0" width="250" height="20" uuid="c8755dc0-7c92-461c-ab52-6c31ff26f58b">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber") && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") == false && $P{SHOW_TAX}]]></printWhenExpression>
 				</reportElement>
@@ -599,7 +599,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.productDescription}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="80" y="0" width="200" height="20" uuid="398d5cb3-87e4-4c73-a413-e4d9bea49caa">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="80" y="0" width="200" height="20" uuid="398d5cb3-87e4-4c73-a413-e4d9bea49caa">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") && $P{SHOW_TAX}]]></printWhenExpression>
 				</reportElement>
@@ -612,7 +612,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.productDescription}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="80" y="0" width="243" height="20" uuid="46c5efa2-d3bb-4d74-beec-0b50c44adaa8">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="80" y="0" width="243" height="20" uuid="46c5efa2-d3bb-4d74-beec-0b50c44adaa8">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") && $P{SHOW_TAX} == false]]></printWhenExpression>
 				</reportElement>
@@ -625,7 +625,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.productDescription}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00%">
-				<reportElement mode="Opaque" x="280" y="0" width="43" height="20" uuid="218344e1-e6ba-4f1b-84bf-27a99566fb44">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="280" y="0" width="43" height="20" uuid="218344e1-e6ba-4f1b-84bf-27a99566fb44">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[$P{SHOW_TAX}]]></printWhenExpression>
 				</reportElement>
@@ -638,7 +638,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.tax}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="323" y="0" width="60" height="20" uuid="68406f60-e4c3-4daa-b785-70d101f1b655">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="323" y="0" width="60" height="20" uuid="68406f60-e4c3-4daa-b785-70d101f1b655">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 				</reportElement>
 				<box leftPadding="2" rightPadding="2">
@@ -650,7 +650,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.qtyUnit}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="383" y="0" width="43" height="20" uuid="0d8651f8-bad1-4cbd-9ae8-a8c33bc199a6">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="383" y="0" width="43" height="20" uuid="0d8651f8-bad1-4cbd-9ae8-a8c33bc199a6">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayPrice") && $P{SHOW_DISCOUNT}]]></printWhenExpression>
 				</reportElement>
@@ -664,7 +664,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<patternExpression><![CDATA["#,##0." + String.join("", Collections.nCopies((int)$P{PURCHASE_ORDER_INFO}.get("DecimalDigits"), "0"))]]></patternExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="383" y="0" width="62" height="20" uuid="cd59dc41-71e7-4922-83b3-8ef515ce83ea">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="383" y="0" width="62" height="20" uuid="cd59dc41-71e7-4922-83b3-8ef515ce83ea">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayPrice") && $P{SHOW_DISCOUNT} == false]]></printWhenExpression>
 				</reportElement>
@@ -678,7 +678,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<patternExpression><![CDATA["#,##0." + String.join("", Collections.nCopies((int)$P{PURCHASE_ORDER_INFO}.get("DecimalDigits"), "0"))]]></patternExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="426" y="0" width="43" height="20" uuid="1355f0bb-b70d-49cd-9176-3541202dc870">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="426" y="0" width="43" height="20" uuid="1355f0bb-b70d-49cd-9176-3541202dc870">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT}]]></printWhenExpression>
 				</reportElement>
@@ -691,7 +691,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[$R{PurchaseOrder.discountAmount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="469" y="0" width="86" height="20" uuid="171155e5-10af-4a63-8aa6-f99571b422ea">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="469" y="0" width="86" height="20" uuid="171155e5-10af-4a63-8aa6-f99571b422ea">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayPrice") && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayDeliveryDate") == false]]></printWhenExpression>
 				</reportElement>
@@ -704,7 +704,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("ati") ? $R{PurchaseOrder.priceInclTax} : $R{PurchaseOrder.priceExclTax}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="445" y="0" width="110" height="20" uuid="6efce402-2851-4b2a-acb9-e3a9d755d08c">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="445" y="0" width="110" height="20" uuid="6efce402-2851-4b2a-acb9-e3a9d755d08c">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} == false && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayPrice") && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayDeliveryDate") == false]]></printWhenExpression>
 				</reportElement>
@@ -717,7 +717,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("ati") ? $R{PurchaseOrder.priceInclTax} : $R{PurchaseOrder.priceExclTax}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="469" y="0" width="46" height="20" uuid="f2ac2907-5ab5-466d-879a-fa32752f72ac">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="469" y="0" width="46" height="20" uuid="f2ac2907-5ab5-466d-879a-fa32752f72ac">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayPrice") && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayDeliveryDate")]]></printWhenExpression>
 				</reportElement>
@@ -730,7 +730,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("ati") ? $R{PurchaseOrder.priceInclTax} : $R{PurchaseOrder.priceExclTax}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="445" y="0" width="70" height="20" uuid="d3ed1a73-7f1b-42c3-adaf-291b7114333d">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="445" y="0" width="70" height="20" uuid="d3ed1a73-7f1b-42c3-adaf-291b7114333d">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} == false && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayPrice") && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayDeliveryDate")]]></printWhenExpression>
 				</reportElement>
@@ -743,7 +743,7 @@ msg($R{PurchaseOrder.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getStr
 				<textFieldExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("ati") ? $R{PurchaseOrder.priceInclTax} : $R{PurchaseOrder.priceExclTax}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Opaque" x="515" y="0" width="40" height="20" uuid="1878ea68-dda5-4b27-8be6-3826f3cb94b9">
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="515" y="0" width="40" height="20" uuid="1878ea68-dda5-4b27-8be6-3826f3cb94b9">
 					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{PURCHASE_ORDER_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayDeliveryDate")]]></printWhenExpression>
 				</reportElement>
