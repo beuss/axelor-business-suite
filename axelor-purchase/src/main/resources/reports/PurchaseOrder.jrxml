@@ -367,7 +367,7 @@ order by PurchaseOrderLine.sequence]]>
 						</textElement>
 						<textFieldExpression><![CDATA[msg($R{PurchaseOrder.paymentModeTitle}, $P{REPORT_RESOURCE_BUNDLE}.containsKey( "value:" + $P{PURCHASE_ORDER_INFO}.get("PaymentModeName") ) ? $P{REPORT_RESOURCE_BUNDLE}.getString( "value:" + $P{PURCHASE_ORDER_INFO}.get("PaymentModeName") ) : $P{PURCHASE_ORDER_INFO}.get("PaymentModeName"))]]></textFieldExpression>
 					</textField>
-					<textField isStretchWithOverflow="true" hyperlinkType="Reference">
+					<textField isStretchWithOverflow="true">
 						<reportElement positionType="Float" x="0" y="55" width="240" height="5" isRemoveLineWhenBlank="true" uuid="97589a0a-ecca-4ede-8cbf-23e0957a7585">
 							<printWhenExpression><![CDATA[$P{PURCHASE_ORDER_INFO}.get("ExternalReference") != null]]></printWhenExpression>
 						</reportElement>
@@ -376,8 +376,6 @@ order by PurchaseOrderLine.sequence]]>
 							<font size="9"/>
 						</textElement>
 						<textFieldExpression><![CDATA[msg($R{PurchaseOrder.externalReferenceTitle}, $P{PURCHASE_ORDER_INFO}.get("ExternalReference"))]]></textFieldExpression>
-						<hyperlinkReferenceExpression><![CDATA["mailto:" + $P{PURCHASE_ORDER_INFO}.get("BuyerEmail")]]></hyperlinkReferenceExpression>
-						<hyperlinkWhenExpression><![CDATA[$P{PURCHASE_ORDER_INFO}.get("BuyerEmail") != null]]></hyperlinkWhenExpression>
 					</textField>
 				</frame>
 				<frame>
