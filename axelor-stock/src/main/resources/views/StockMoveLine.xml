@@ -290,7 +290,7 @@
         </panel-mail>
     </form>
 
-    <form model="com.axelor.apps.base.db.Wizard" title="Enter tracking numbers" name="stock-move-line-track-number-wizard-form" onNew="action-track-number-atts-from-stock-move-line">
+    <form model="com.axelor.apps.base.db.Wizard" title="Enter tracking numbers" name="stock-move-line-track-number-wizard-form" onNew="action-track-number-atts-from-stock-move-line,action-stock-move-line-method-display-available-tracking-number">
     	<panel name="wizardPanel" colSpan="12">
 	    	<panel-related name="$trackingNumbersPanel" field="$trackingNumbers" canSelect="false" editable="true" type="one-to-many" colSpan="12" title="Enter tracking numbers" target="com.axelor.apps.stock.db.TrackingNumber">
 	    	 	<field name="trackingNumber" type="many-to-one" target="com.axelor.apps.stock.db.TrackingNumber" hidden="true" onChange="action-stock-move-line-wizard-record-set-tracking-number-seq" onSelect="action-stock-move-line-wizard-attrs-tracking-number-domain" canEdit="false"/>
