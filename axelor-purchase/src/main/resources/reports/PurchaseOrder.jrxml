@@ -813,7 +813,7 @@ $F{productCode}.equals($F{supplierProductCode}) == false]]></printWhenExpression
 				<reportElement stretchType="ContainerHeight" x="0" y="0" width="80" height="15" uuid="6245dd4a-a1e1-422b-b788-eb71e388aea7">
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber") == false && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode")]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2" leftPadding="0">
+				<box topPadding="0" leftPadding="0">
 					<leftPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
@@ -821,7 +821,7 @@ $F{productCode}.equals($F{supplierProductCode}) == false]]></printWhenExpression
 					<reportElement x="0" y="0" width="80" height="8" uuid="a10b6533-3ce7-4d5d-82d4-98e1e99bef7c">
 						<propertyExpression name="net.sf.jasperreports.style.fontSize"><![CDATA[$F{productCode}.length() <= 17 ? "8" : "7"]]></propertyExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -854,7 +854,7 @@ $F{productCode}.equals($F{supplierProductCode}) == false]]></printWhenExpression
 				<reportElement key="" stretchType="ContainerHeight" x="80" y="0" width="200" height="15" uuid="9468a602-e217-4e0c-a3b5-c64024844023">
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") && $P{SHOW_TAX}]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineStyle="Solid" lineColor="#000000"/>
@@ -864,7 +864,7 @@ $F{productCode}.equals($F{supplierProductCode}) == false]]></printWhenExpression
 					<reportElement key="" x="0" y="0" width="200" height="8" uuid="2b7c7c17-5d36-4ff2-bd3e-4e36e249c538">
 						<propertyExpression name="net.sf.jasperreports.style.isBold"><![CDATA[$F{isTitleLine} ? "true" : "false"]]></propertyExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -910,7 +910,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement key="" stretchType="ContainerHeight" x="80" y="0" width="243" height="15" uuid="bac7141e-2c96-4bb5-abee-877a17a2d34f">
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") && $P{SHOW_TAX} == false]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineStyle="Solid" lineColor="#000000"/>
@@ -920,7 +920,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement key="" x="0" y="0" width="242" height="8" uuid="076c180c-783a-4d76-bbf2-cfa98ecbc91b">
 						<propertyExpression name="net.sf.jasperreports.style.isBold"><![CDATA[$F{isTitleLine} ? "true" : "false"]]></propertyExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -966,7 +966,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement key="" stretchType="ContainerHeight" x="0" y="0" width="280" height="15" uuid="9a63666c-0de9-4a69-807d-014be44bd34e">
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber") == false && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") == false && $P{SHOW_TAX}]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineStyle="Solid" lineColor="#000000"/>
@@ -976,7 +976,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement key="" x="0" y="0" width="280" height="8" uuid="4ca9b272-df10-4fee-ac30-2eaf4a42b6a9">
 						<propertyExpression name="net.sf.jasperreports.style.isBold"><![CDATA[$F{isTitleLine} ? "true" : "false"]]></propertyExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1022,7 +1022,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement key="" stretchType="ContainerHeight" x="0" y="0" width="323" height="15" uuid="dd54ce91-e67c-42af-9747-03cdfc5656b9">
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber") == false && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") == false && $P{SHOW_TAX}]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineStyle="Solid" lineColor="#000000"/>
@@ -1032,7 +1032,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement key="" x="0" y="0" width="322" height="8" uuid="16844468-5750-4236-abae-626fa9e0ce66">
 						<propertyExpression name="net.sf.jasperreports.style.isBold"><![CDATA[$F{isTitleLine} ? "true" : "false"]]></propertyExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1078,7 +1078,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement key="" stretchType="ContainerHeight" x="30" y="0" width="250" height="15" uuid="0bc86069-0299-4dac-96aa-7bf716275d35">
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber") && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") == false && $P{SHOW_TAX}]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineStyle="Solid" lineColor="#000000"/>
@@ -1088,7 +1088,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement key="" x="0" y="0" width="250" height="8" uuid="6f82b23a-409c-430a-9626-a4ee03476392">
 						<propertyExpression name="net.sf.jasperreports.style.isBold"><![CDATA[$F{isTitleLine} ? "true" : "false"]]></propertyExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1134,7 +1134,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement key="" stretchType="ContainerHeight" x="30" y="0" width="293" height="15" uuid="52e42d60-e544-4f12-9683-b0bf70fcce49">
 					<printWhenExpression><![CDATA[(Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayLineNumber") && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayProductCode") == false && $P{SHOW_TAX} == false]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineStyle="Solid" lineColor="#000000"/>
@@ -1144,7 +1144,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement key="" x="0" y="0" width="292" height="8" uuid="f32500c2-ab00-4b91-b745-0b6bde55d0b7">
 						<propertyExpression name="net.sf.jasperreports.style.isBold"><![CDATA[$F{isTitleLine} ? "true" : "false"]]></propertyExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1220,7 +1220,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement stretchType="ContainerBottom" x="383" y="0" width="43" height="15" uuid="3ee83f61-e91e-4c3e-a12c-d65424691d4f">
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT}]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1230,7 +1230,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement stretchType="ContainerBottom" x="0" y="0" width="43" height="15" uuid="e84e2931-ae83-4a52-b1e0-08e92c8bc227">
 						<printWhenExpression><![CDATA[$F{isTitleLine} == false]]></printWhenExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1239,7 +1239,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{SHOW_DISCOUNT} ? $F{unitPrice} : $F{priceDiscounted}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{unitPrice}]]></textFieldExpression>
 					<patternExpression><![CDATA["#,##0." + String.join("", Collections.nCopies((int)$P{PURCHASE_ORDER_INFO}.get("DecimalDigits"), "0"))]]></patternExpression>
 				</textField>
 			</frame>
@@ -1247,7 +1247,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement stretchType="ContainerBottom" x="383" y="0" width="62" height="15" uuid="71ae09d3-56fb-4f92-8617-3c1b296f0d54">
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} == false]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1257,7 +1257,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement stretchType="ContainerBottom" x="0" y="0" width="62" height="15" uuid="0c37576d-6bbe-4824-a3c7-72587673e701">
 						<printWhenExpression><![CDATA[$F{isTitleLine} == false]]></printWhenExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1266,7 +1266,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{SHOW_DISCOUNT} ? $F{unitPrice} : $F{priceDiscounted}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{priceDiscounted}]]></textFieldExpression>
 					<patternExpression><![CDATA["#,##0." + String.join("", Collections.nCopies((int)$P{PURCHASE_ORDER_INFO}.get("DecimalDigits"), "0"))]]></patternExpression>
 				</textField>
 			</frame>
@@ -1274,7 +1274,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement stretchType="ContainerBottom" x="426" y="0" width="43" height="15" uuid="79b7699c-777d-4713-9225-3daa812a6f7a">
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT}]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1284,7 +1284,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement stretchType="ContainerBottom" x="0" y="0" width="43" height="15" uuid="fc934587-0c02-442a-a11f-ccce80f82816">
 						<printWhenExpression><![CDATA[$F{isTitleLine} == false]]></printWhenExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1301,7 +1301,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement stretchType="ContainerBottom" x="469" y="0" width="86" height="15" uuid="5adce7b5-27dc-470a-87e5-95e7bbdb319b">
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayDeliveryDate") == false]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1311,7 +1311,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement stretchType="ContainerBottom" x="0" y="0" width="86" height="15" uuid="b286f7c6-0252-4cd0-a0f0-afa8c63bffde">
 						<printWhenExpression><![CDATA[$F{isTitleLine} == false]]></printWhenExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1327,7 +1327,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement stretchType="ContainerBottom" x="445" y="0" width="110" height="15" uuid="6364f160-a2de-4c80-b19b-c8d1dedc4d7d">
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} == false && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayDeliveryDate") == false]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1337,7 +1337,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement stretchType="ContainerBottom" x="0" y="0" width="110" height="15" uuid="1a3f2fe4-fe98-4e2b-a997-300174018d7e">
 						<printWhenExpression><![CDATA[$F{isTitleLine} == false]]></printWhenExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1353,7 +1353,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement stretchType="ContainerBottom" x="469" y="0" width="46" height="15" uuid="8835bc07-f4af-4ab6-835d-a35b9327d4e6">
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayDeliveryDate")]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1363,7 +1363,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement stretchType="ContainerBottom" x="0" y="0" width="46" height="15" uuid="5fa8ff1c-8b84-45f1-bc42-d54456ddc7fb">
 						<printWhenExpression><![CDATA[$F{isTitleLine} == false]]></printWhenExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1379,7 +1379,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 				<reportElement stretchType="ContainerBottom" x="445" y="0" width="70" height="15" uuid="c4304457-25c3-4d79-bf39-6369dcb26437">
 					<printWhenExpression><![CDATA[$P{SHOW_DISCOUNT} == false && (Boolean)$P{PURCHASE_ORDER_INFO}.get("DisplayDeliveryDate")]]></printWhenExpression>
 				</reportElement>
-				<box topPadding="2">
+				<box topPadding="0">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1389,7 +1389,7 @@ $F{productName}.equals($F{supplierProductName}) == false]]></printWhenExpression
 					<reportElement stretchType="ContainerBottom" x="0" y="0" width="70" height="15" uuid="289d46dc-66f9-4404-bea7-359afd518aa9">
 						<printWhenExpression><![CDATA[$F{isTitleLine} == false]]></printWhenExpression>
 					</reportElement>
-					<box leftPadding="2" rightPadding="2">
+					<box topPadding="2" leftPadding="2" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
