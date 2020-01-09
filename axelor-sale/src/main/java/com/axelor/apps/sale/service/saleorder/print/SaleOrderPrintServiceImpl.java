@@ -25,8 +25,10 @@ import com.axelor.apps.sale.exception.IExceptionMessage;
 import com.axelor.apps.sale.report.IReport;
 import com.axelor.apps.sale.service.saleorder.SaleOrderService;
 import com.axelor.apps.tool.ModelTool;
+import com.axelor.apps.tool.StringTool;
 import com.axelor.apps.tool.ThrowConsumer;
 import com.axelor.apps.tool.file.PdfTool;
+import com.axelor.db.JPA;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.i18n.I18n;
@@ -36,10 +38,15 @@ import com.axelor.meta.db.MetaFile;
 import com.google.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class SaleOrderPrintServiceImpl implements SaleOrderPrintService {
 
@@ -48,23 +55,22 @@ public class SaleOrderPrintServiceImpl implements SaleOrderPrintService {
   @Override
   public String printSaleOrder(SaleOrder saleOrder, boolean proforma, String format)
       throws AxelorException, IOException {
-    String fileName = getSaleOrderFilesName(false, format);
+    String fileName = getSaleOrderFilesName(Collections.singletonList(saleOrder), format);
     return PdfTool.getFileLinkFromPdfFile(print(saleOrder, proforma, format), fileName);
   }
 
   @Override
-  public String printSaleOrders(List<Long> ids) throws IOException {
+  public String printSaleOrders(List<Long> ids) throws AxelorException, IOException {
     List<File> printedSaleOrders = new ArrayList<>();
-    ModelTool.apply(
-        SaleOrder.class,
-        ids,
-        new ThrowConsumer<SaleOrder>() {
-          @Override
-          public void accept(SaleOrder saleOrder) throws Exception {
-            printedSaleOrders.add(print(saleOrder, false, ReportSettings.FORMAT_PDF));
-          }
-        });
-    String fileName = getSaleOrderFilesName(true, ReportSettings.FORMAT_PDF);
+    List<SaleOrder> orders = new LinkedList<>();
+    for(Long id : ids) {
+      SaleOrder o = JPA.find(SaleOrder.class, id);
+      if(o == null) continue;
+      orders.add(o);
+      printedSaleOrders.add(print(o, false, ReportSettings.FORMAT_PDF));
+    }
+    String fileName = getSaleOrderFilesName(orders, ReportSettings.FORMAT_PDF);
+    JPA.clear();
     return PdfTool.mergePdfToFileLink(printedSaleOrders, fileName);
   }
 
@@ -119,13 +125,36 @@ public class SaleOrderPrintServiceImpl implements SaleOrderPrintService {
   /**
    * Return the name for the printed sale order.
    *
-   * @param plural if there is one or multiple sale orders.
+   * @param orders Printed orders.
    */
-  protected String getSaleOrderFilesName(boolean plural, String format) {
+  protected String getSaleOrderFilesName(List<SaleOrder> orders, String format) {
+    if(orders.size() == 1) {
+      SaleOrder order = orders.get(0);
+      String formatString;
+      if(order.getStatusSelect() < 3) {
+        formatString = I18n.get("SaleOrder.quotationTitle");
+      } else {
+        formatString = I18n.get("SaleOrder.orderTitle");
+      }
+      return StringTool.getFilename(
+              MessageFormat.format(formatString, order.getSaleOrderSeq(), order.getVersionNumber() != null && order.getVersionNumber() > 1 ? "-V" + order.getVersionNumber() : "")) + "." + format;
+    }
 
-    return I18n.get(plural ? "Sale orders" : "Sale order")
-        + " - "
-        + Beans.get(AppBaseService.class).getTodayDate().format(DateTimeFormatter.BASIC_ISO_DATE)
+    if(orders.size() > 10) {
+      return String.format(I18n.get("%d sale orders"), orders.size())
+          + "-"
+          + Beans.get(AppBaseService.class).getTodayDate().format(DateTimeFormatter.BASIC_ISO_DATE)
+          + "."
+          + format;
+    }
+
+    List<String> refs = new LinkedList<>();
+    for(SaleOrder order : orders) {
+      refs.add(order.getSaleOrderSeq());
+    }
+    return I18n.get("Sale orders")
+        + "-"
+        + StringUtils.join("-", refs)
         + "."
         + format;
   }

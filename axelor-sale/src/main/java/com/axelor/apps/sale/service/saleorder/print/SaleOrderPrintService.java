@@ -31,9 +31,8 @@ public interface SaleOrderPrintService {
    *
    * @param ids ids of the sale order.
    * @return the link to the generated file.
-   * @throws IOException
    */
-  String printSaleOrders(List<Long> ids) throws IOException;
+  String printSaleOrders(List<Long> ids) throws AxelorException, IOException;
 
   ReportSettings prepareReportSettings(SaleOrder saleOrder, boolean proforma, String format)
       throws AxelorException;
