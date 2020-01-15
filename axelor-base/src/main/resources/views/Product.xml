@@ -418,7 +418,7 @@
     <action-record name="action-product-record-set-control-on-receipt" model="com.axelor.apps.base.db.Product">
     	<field name="controlOnReceipt" expr="eval: productApproval?.controlOnReceipt"/>
     </action-record>
-    
+
     <action-attrs name="action-product-attrs-in-ati">
     	<attribute name="hidden" for="inAti" expr=" eval: __config__.app.getApp('base').getProductInAtiSelect() == 1 || __config__.app.getApp('base').getProductInAtiSelect() == 2"/>
 		<attribute if=" __config__.app.getApp('base').getProductInAtiSelect() == 1 || __config__.app.getApp('base').getProductInAtiSelect() == 2"
@@ -473,6 +473,9 @@
     	<field name="managPriceCoef" expr="1"/>
     	<field name="isModel" expr="eval: _isModel"/>
     	<field name="isShippingCostsProduct" expr="eval: _isShippingCostsProduct"/>
+		<field name="unit" expr="eval:__config__.app.getApp('base').getDefaultProductUnit()"/>
+		<field name="salesUnit" expr="eval:__config__.app.getApp('base').getDefaultProductUnit()"/>
+		<field name="purchasesUnit" expr="eval:__config__.app.getApp('base').getDefaultProductUnit()"/>
     </action-record>
     
     <action-record name="action-product-record-product-sub-type-select-onchange" model="com.axelor.apps.base.db.Product">

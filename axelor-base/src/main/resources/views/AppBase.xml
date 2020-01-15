@@ -24,6 +24,7 @@
 		    	<field name="emailAccountByUser" widget="boolean-switch"/>
 		    	<field name="productInAtiSelect"/>
 		    	<field name="nbDecimalDigitForUnitPrice"/>
+				<field name="defaultProductUnit" form-view="unit-form" grid-view="unit-grid"/>
 		    	<field name="computeMethodDiscountSelect"/>
 		    	<field name="timeLoggingPreferenceSelect"/>
 		    	<field name="dailyWorkHours"/>
