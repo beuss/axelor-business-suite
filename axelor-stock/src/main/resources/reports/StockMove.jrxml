@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StockMove" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" resourceBundle="StockMove" whenResourceMissingType="Key" uuid="7484c31a-5ee3-48ec-899d-2b49eb341730">
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="false"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Arkeon"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="STOCK_MOVE_ID" class="java.lang.Long">
+		<parameterDescription><![CDATA[Id of the stock move]]></parameterDescription>
+	</parameter>
+	<parameter name="ATTACHMENT_PATH" class="java.lang.String"/>
+	<parameter name="INTERNAL_MOVE_TYPE" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="OUTGOING_MOVE_TYPE" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="INCOMING_MOVE_TYPE" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[3]]></defaultValueExpression>
+	</parameter>
+	<parameter name="STOCK_MOVE_INFO" class="java.util.Map" isForPrompting="false">
+		<defaultValueExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.sqlFetch($P{REPORT_CONNECTION}, 
+"select " +
+"Company.name as \"CompanyName\", " +
+"ToStockLocation.name as \"DestinationLocationName\", " +
+"StockMove.id as \"StockMoveId\", " +
+"MetaFile.file_path as \"LogoPath\", " +
+"StockMove.real_date as \"RealDate\", " +
+"StockMove.picking_edit_date as \"PickingEditDate\", " +
+"StockMove.type_select as \"TypeSelect\", " +
+"StockMove.stock_move_seq as \"StockMoveSeq\", " +
+"Partner.title_select as \"PartnerTitle\", " +
+"Partner.name as \"PartnerName\", " +
+"Partner.first_name as \"PartnerFirstName\", " +
+"Partner.partner_type_select as \"PartnerType\", " +
+"Partner.partner_seq as \"PartnerSeq\", " +
+"FromAddress.id as \"FromAddressId\", " +
+"ToAddress.id as \"ToAddressId\", " +
+"COALESCE(ToAddress.addressl2 || E'\\n', '') || COALESCE(ToAddress.addressl3 || E'\\n', '') || COALESCE(ToAddress.addressl4 || E'\\n', '') || COALESCE(ToAddress.addressl5 || E'\\n', '') || COALESCE(ToAddress.addressl6, '') || COALESCE(E'\\n' || ToAddressCountry.name, '') as \"DeliveryAddress\", " +
+"COALESCE(FromAddress.addressl2 || E'\\n', '') || COALESCE(FromAddress.addressl3 || E'\\n', '') || COALESCE(FromAddress.addressl4 || E'\\n', '') || COALESCE(FromAddress.addressl5 || E'\\n', '') || COALESCE(FromAddress.addressl6, '') || COALESCE(E'\\n' || FromAddressCountry.name, '') as \"ReturnAddress\", " +
+"StockMove.is_ispm_required, " +
+"PrintingSettings.pdf_header as \"PrintingSettingsHeader\", " +
+"PrintingSettings.pdf_footer as \"PrintingSettingsFooter\", " +
+"PrintingSettings.logo_position_select as \"LogoPosition\", " +
+"COALESCE(NULLIF(PrintingSettings.primary_background_color, ''), '#86bc25') as \"PrimaryBackgroundColor\", " +
+"COALESCE(NULLIF(PrintingSettings.secondary_background_color, ''), '#f3f3f3') as \"SecondaryBackgroundColor\", " +
+"COALESCE(NULLIF(PrintingSettings.primary_foreground_color, ''), '#86bc25') as \"PrimaryForegroundColor\", " +
+"COALESCE(NULLIF(PrintingSettings.secondary_foreground_color, ''), '#f3f3f3') as \"SecondaryForegroundColor\", " +
+"StockMove.num_of_packages as \"PackagesCount\", " +
+"StockMove.num_of_palettes as \"PalletsCount\", " +
+"StockMove.tracking_number as \"TrackingNumber\", " +
+"StockMove.gross_mass as \"GrossMass\", " +
+"CASE " +
+"        WHEN StockMove.origin_type_select LIKE '%SaleOrder' THEN SaleOrder.sale_order_seq " +
+"        WHEN StockMove.origin_type_select LIKE '%PurchaseOrder' THEN PurchaseOrder.purchase_order_seq " +
+"END " +
+"as \"OriginInternalReference\", " +
+"CASE " +
+"        WHEN StockMove.origin_type_select LIKE '%SaleOrder' THEN SaleOrder.external_reference " +
+"        WHEN StockMove.origin_type_select LIKE '%PurchaseOrder' THEN PurchaseOrder.external_reference " +
+"END " +
+"as \"OriginExternalReference\", " +
+"CASE " +
+"        WHEN StockMove.origin_type_select LIKE '%SaleOrder' THEN SaleOrder.main_invoicing_address_str " +
+"END " +
+"as \"InvoicingAddress\", " +
+"StockConfig.display_partner_seq_on_printing as \"DisplayPartnerSeq\", " +
+"StockConfig.display_line_details_on_printing as \"DisplayLineDetails\", " +
+"(StockMove.type_select != " + $P{OUTGOING_MOVE_TYPE} + " OR COALESCE(StockConfig.display_track_nbr_on_outgoing_move_printing, false)) as \"DisplayTrackingNumbers\", " +
+"StockMove.note as \"Note\" " +
+" " +
+"from stock_stock_move as StockMove " +
+"left outer join stock_stock_location as FromStockLocation on (StockMove.from_stock_location = FromStockLocation.id) " +
+"left outer join stock_stock_location as ToStockLocation on (StockMove.to_stock_location = ToStockLocation.id) " +
+"left outer join base_company as Company on (StockMove.company = Company.id) " +
+"left outer join stock_stock_config as StockConfig on (StockConfig.company = Company.id) " +
+"left outer join meta_file as MetaFile on (MetaFile.id = Company.logo) " +
+"left outer join base_partner as Partner on (StockMove.partner = Partner.id) " +
+"left outer join base_address as ToAddress on (CASE WHEN StockMove.type_select = " + $P{OUTGOING_MOVE_TYPE}  + " THEN StockMove.to_address = ToAddress.id ELSE ToStockLocation.address = ToAddress.id END) " +
+"left outer join base_country as ToAddressCountry on (ToAddress.addressl7country = ToAddressCountry.id) " +
+"left outer join base_address as FromAddress on (CASE WHEN StockMove.type_select = " + $P{INCOMING_MOVE_TYPE} + " THEN StockMove.from_address = FromAddress.id ELSE FromStockLocation.address = FromAddress.id END) " +
+"left outer join base_country as FromAddressCountry on (FromAddress.addressl7country = FromAddressCountry.id) " +
+"left outer join auth_user as AuthUser on (StockMove.updated_by = AuthUser.id) " +
+"left outer join auth_user as AuthUserCreate on (StockMove.created_by = AuthUserCreate.id) " +
+"left outer join base_printing_settings as PrintingSettings on (StockMove.printing_settings = PrintingSettings.id) " +
+"left outer join sale_sale_order as SaleOrder on (StockMove.origin_id = SaleOrder.id) " +
+"left outer join purchase_purchase_order as PurchaseOrder on (StockMove.origin_id = PurchaseOrder.id) " +
+"where StockMove.id = ?", $P{STOCK_MOVE_ID})]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select 
+StockMove.id as "moveId", 
+Product.code as "productCode", 
+StockMoveLine.product_name as "productName",
+SUM(StockMoveLine.real_qty) as "quantity", 
+Unit.name as "unitCode", 
+string_agg(TrackingNumber.tracking_number_seq, ' ') as "trackingNumbers", 
+StockMoveLine.description,
+COALESCE(SaleOrderLine.type_select = 2 or PurchaseOrderLine.is_title_line, false) as "isTitleLine",
+SaleOrderLine.type_select = 2 as "isPackLine",
+StockMoveLine.is_sub_line as "isSubLine",
+CustomerCatalog.product_customer_code as "customerProductCode",
+CustomerCatalog.product_customer_name as "customerProductName"
+from stock_stock_move as StockMove
+inner join (select * from stock_stock_move_line order by sequence) as StockMoveLine on (StockMoveLine.stock_move = StockMove.id)
+left join base_product as Product on (StockMoveLine.product = Product.id)
+left join base_unit as Unit on (StockMoveLine.unit = Unit.id)
+left join stock_tracking_number as TrackingNumber on (StockMoveLine.tracking_number = TrackingNumber.id)
+left outer join sale_sale_order_line as SaleOrderLine on (SaleOrderLine.id = StockMoveLine.sale_order_line)
+left outer join purchase_purchase_order_line as PurchaseOrderLine on (PurchaseOrderLine.id = StockMoveLine.purchase_order_line) 
+left outer join sale_customer_catalog as CustomerCatalog on (CustomerCatalog.product = Product.id and CustomerCatalog.customer_partner = StockMove.partner) 
+left outer join stock_stock_location as FromLocation on (FromLocation.id = StockMove.from_stock_location and StockMove.type_select = 1)
+left outer join stock_stock_location_line as FromStockLocationLine on (FromLocation.id = FromStockLocationLine.stock_location and FromStockLocationLine.product = Product.id)
+left outer join stock_stock_location as ToLocation on (ToLocation.id = StockMove.to_stock_location and StockMove.type_select in (1,3))
+left outer join stock_stock_location_line as ToStockLocationLine on (ToLocation.id = ToStockLocationLine.stock_location and ToStockLocationLine.product = Product.id)
+where StockMove.id = $P{STOCK_MOVE_ID} and StockMoveLine.real_qty > 0
+group by StockMove.id, Product.code, StockMoveLine.product_name, Unit.name, StockMoveLine.description,
+(SaleOrderLine.type_select = 2 or PurchaseOrderLine.is_title_line), SaleOrderLine.type_select = 2, StockMoveLine.is_sub_line,
+CustomerCatalog.product_customer_code, CustomerCatalog.product_customer_name]]>
+	</queryString>
+	<field name="moveId" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="moveId"/>
+	</field>
+	<field name="productCode" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="productCode"/>
+	</field>
+	<field name="productName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="productName"/>
+	</field>
+	<field name="quantity" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="quantity"/>
+	</field>
+	<field name="unitCode" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="unitCode"/>
+	</field>
+	<field name="trackingNumbers" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="trackingNumbers"/>
+	</field>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+	</field>
+	<field name="isTitleLine" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="isTitleLine"/>
+	</field>
+	<field name="isPackLine" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="isPackLine"/>
+	</field>
+	<field name="isSubLine" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="isSubLine"/>
+	</field>
+	<field name="customerProductCode" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="customerProductCode"/>
+	</field>
+	<field name="customerProductName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="customerProductName"/>
+	</field>
+	<group name="Group1">
+		<groupExpression><![CDATA[true]]></groupExpression>
+		<groupFooter>
+			<band height="1">
+				<staticText>
+					<reportElement x="0" y="0" width="555" height="0" uuid="71124626-a0e9-49e8-895b-e5fc7f06386f"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<text><![CDATA[]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="150" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="33" width="555" height="15" isRemoveLineWhenBlank="true" uuid="5afa6e3d-d83e-4661-ba1d-7d7d34486916">
+					<printWhenExpression><![CDATA[(int)$P{STOCK_MOVE_INFO}.get("LogoPosition") == 0 || (int)$P{STOCK_MOVE_INFO}.get("LogoPosition") == 2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{STOCK_MOVE_INFO}.get("PrintingSettingsHeader"))]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement positionType="Float" stretchType="ElementGroupHeight" x="0" y="55" width="555" height="88" isRemoveLineWhenBlank="true" uuid="49722368-032e-47e1-8242-2c0bb1d804d7">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
+				</reportElement>
+				<frame>
+					<reportElement key="orderInfoFrame" x="0" y="0" width="240" height="50" uuid="c1547fee-d3f0-40a3-949d-a6e1c83e66c0"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="0" y="0" width="240" height="20" uuid="c5c8e116-c503-4383-bbca-5639a733e409"/>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+							<bottomPen lineWidth="0.5"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="12" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg((int)$P{STOCK_MOVE_INFO}.get("TypeSelect") == 1 ? $R{StockMove.internalMoveTitle} : (int)$P{STOCK_MOVE_INFO}.get("TypeSelect") == 2 ? $R{StockMove.deliveryOrderTitle} :  $R{StockMove.receptionOrderTitle}, $P{STOCK_MOVE_INFO}.get("StockMoveSeq"))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement positionType="Float" x="0" y="20" width="240" height="5" isRemoveLineWhenBlank="true" uuid="87abeaef-df21-40da-8331-ab278c8ad803"/>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg((int)$P{STOCK_MOVE_INFO}.get("TypeSelect") == $P{INCOMING_MOVE_TYPE} ? $R{StockMove.receiptDateTitle} : $R{StockMove.shippingDateTitle}, $P{STOCK_MOVE_INFO}.get("RealDate"))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement positionType="Float" x="0" y="25" width="240" height="5" isRemoveLineWhenBlank="true" uuid="24fd5f46-b9ac-4a36-ba00-16838e5ec764">
+							<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{STOCK_MOVE_INFO}.get("OriginInternalReference")) == false]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{StockMove.originInternalReferenceTitle}, $P{STOCK_MOVE_INFO}.get("OriginInternalReference"))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="Reference">
+						<reportElement positionType="Float" x="0" y="30" width="240" height="5" isRemoveLineWhenBlank="true" uuid="365f9eb5-76fd-4f4a-8314-b628a852b60c">
+							<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{STOCK_MOVE_INFO}.get("OriginExternalReference")) == false]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{StockMove.originExternalReferenceTitle}, $P{STOCK_MOVE_INFO}.get("OriginExternalReference"))]]></textFieldExpression>
+						<hyperlinkReferenceExpression><![CDATA["mailto:" + $P{STOCK_MOVE_INFO}.get("BuyerEmail")]]></hyperlinkReferenceExpression>
+						<hyperlinkWhenExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("BuyerEmail") != null]]></hyperlinkWhenExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="Reference">
+						<reportElement positionType="Float" x="0" y="35" width="240" height="5" isRemoveLineWhenBlank="true" uuid="2ed8f2fc-b7e4-474a-b9be-75909b750190">
+							<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{STOCK_MOVE_INFO}.get("TrackingNumber")) == false]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{StockMove.trackingNumberTitle}, $P{STOCK_MOVE_INFO}.get("TrackingNumber"))]]></textFieldExpression>
+						<hyperlinkReferenceExpression><![CDATA["mailto:" + $P{STOCK_MOVE_INFO}.get("BuyerEmail")]]></hyperlinkReferenceExpression>
+						<hyperlinkWhenExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("BuyerEmail") != null]]></hyperlinkWhenExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" hyperlinkType="" hyperlinkTarget="">
+						<reportElement positionType="Float" x="0" y="40" width="240" height="5" isRemoveLineWhenBlank="true" uuid="190eaa2f-12c0-4b9e-8ed8-99ed550d302d">
+							<printWhenExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("PackagesCount") != null && ((Integer)$P{STOCK_MOVE_INFO}.get("PackagesCount")) > 0]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{StockMove.packagesCountTitle}, $P{STOCK_MOVE_INFO}.get("PackagesCount"))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="0" y="45" width="240" height="5" isRemoveLineWhenBlank="true" uuid="6bd02d3b-b1c5-47cf-b375-cb91808fe23b">
+							<printWhenExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("PalletsCount") != null && ((Integer)$P{STOCK_MOVE_INFO}.get("PalletsCount")) > 0]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2"/>
+						<textElement>
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[msg($R{StockMove.palletsCountTitle}, $P{STOCK_MOVE_INFO}.get("PalletsCount"))]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement x="314" y="0" width="240" height="33" uuid="97282ce4-55a5-481a-9e5f-c2b09d2bccd4"/>
+					<textField isStretchWithOverflow="true">
+						<reportElement x="0" y="0" width="240" height="10" isRemoveLineWhenBlank="true" uuid="7afd7a9d-923c-404f-a310-79dbb9c0fead"/>
+						<textElement>
+							<font size="12" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[(int)$P{STOCK_MOVE_INFO}.get("TypeSelect") == $P{OUTGOING_MOVE_TYPE} ?
+(
+	(int)$P{STOCK_MOVE_INFO}.get("PartnerType") == 1 ?
+msg($R{StockMove.companyCustomerTitle}, $P{STOCK_MOVE_INFO}.get("PartnerName")) :
+msg($R{StockMove.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getString((String)$P{STOCK_MOVE_INFO}.get("PartnerTitle")), $P{STOCK_MOVE_INFO}.get("PartnerName"), $P{STOCK_MOVE_INFO}.get("PartnerFirstName"))
+)
+: (msg($R{StockMove.companyInternalTitle}, $P{STOCK_MOVE_INFO}.get("CompanyName"), $P{STOCK_MOVE_INFO}.get("DestinationLocationName")))]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" x="0" y="10" width="240" height="23" isRemoveLineWhenBlank="true" uuid="6fda2e2d-44b8-4673-880e-f9bf3278d00d">
+							<printWhenExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("DeliveryAddress") != null]]></printWhenExpression>
+						</reportElement>
+						<textElement>
+							<font size="10" isBold="false" isUnderline="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("DeliveryAddress")]]></textFieldExpression>
+					</textField>
+				</frame>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="58" width="240" height="10" isRemoveLineWhenBlank="true" uuid="5e96d672-7476-4966-afae-89870c0a23c0">
+						<printWhenExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("ReturnAddress") != null]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="5"/>
+					<textElement>
+						<font size="10" isBold="false" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{StockMove.returnAddressTitle}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="68" width="240" height="10" isRemoveLineWhenBlank="true" uuid="a4a77b55-3a3b-49be-97d5-5ac35b816778">
+						<printWhenExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("ReturnAddress") != null]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font size="10" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(int)$P{STOCK_MOVE_INFO}.get("TypeSelect") == $P{INCOMING_MOVE_TYPE} ?
+(
+	(int)$P{STOCK_MOVE_INFO}.get("PartnerType") == 1 ?
+msg($R{StockMove.companyCustomerTitle}, $P{STOCK_MOVE_INFO}.get("PartnerName")) :
+msg($R{StockMove.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getString((String)$P{STOCK_MOVE_INFO}.get("PartnerTitle")), $P{STOCK_MOVE_INFO}.get("PartnerName"), $P{STOCK_MOVE_INFO}.get("PartnerFirstName"))
+)
+: 
+(
+	(int)$P{STOCK_MOVE_INFO}.get("TypeSelect") == $P{OUTGOING_MOVE_TYPE} ? 
+		$P{STOCK_MOVE_INFO}.get("CompanyName") :
+		msg($R{StockMove.companyInternalTitle}, $P{STOCK_MOVE_INFO}.get("CompanyName"), $P{STOCK_MOVE_INFO}.get("DestinationLocationName"))
+)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="78" width="240" height="10" isRemoveLineWhenBlank="true" uuid="84f5cb2a-bc9a-424e-94d3-a73d634fad04">
+						<printWhenExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("ReturnAddress") != null]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font size="10" isBold="false" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("ReturnAddress")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="314" y="35" width="240" height="10" isRemoveLineWhenBlank="true" uuid="d16b1276-ca72-4a4f-9c69-39f7d2a03c6c">
+						<printWhenExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("InvoicingAddress") != null]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="5"/>
+					<textElement>
+						<font size="10" isBold="false" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{StockMove.invoicingAddressTitle}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="314" y="45" width="240" height="10" isRemoveLineWhenBlank="true" uuid="762e83ae-7f28-4b06-8205-09628c3e6d57">
+						<printWhenExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("InvoicingAddress") != null]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font size="10" isBold="false" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("InvoicingAddress")]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="280" y="55" width="100" height="30" uuid="6dc0eae8-a837-483f-af58-417f03c18c22"/>
+					<textFieldExpression><![CDATA[(boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers")]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="0" width="555" height="30" isRemoveLineWhenBlank="true" uuid="a07dcdda-d995-44e8-808f-b811b50502a5">
+					<printWhenExpression><![CDATA[(int)$P{STOCK_MOVE_INFO}.get("LogoPosition") != 0]]></printWhenExpression>
+				</reportElement>
+				<image scaleImage="RealSize" vAlign="Middle">
+					<reportElement x="0" y="0" width="120" height="30" uuid="eeedddf3-e47a-43fd-ae39-45822da30778">
+						<printWhenExpression><![CDATA[(int)$P{STOCK_MOVE_INFO}.get("LogoPosition") == 1]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{ATTACHMENT_PATH} + $P{STOCK_MOVE_INFO}.get("LogoPath")]]></imageExpression>
+				</image>
+				<image scaleImage="RealSize" hAlign="Center" vAlign="Middle">
+					<reportElement x="217" y="0" width="120" height="30" uuid="a169b448-d126-4f13-9bdc-a8a4603e4630">
+						<printWhenExpression><![CDATA[(int)$P{STOCK_MOVE_INFO}.get("LogoPosition") == 2]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{ATTACHMENT_PATH} + $P{STOCK_MOVE_INFO}.get("LogoPath")]]></imageExpression>
+				</image>
+				<image scaleImage="RealSize" hAlign="Right" vAlign="Middle">
+					<reportElement x="435" y="0" width="120" height="30" uuid="63011429-7aab-43b7-b011-721197b47c04">
+						<printWhenExpression><![CDATA[(int)$P{STOCK_MOVE_INFO}.get("LogoPosition") == 3]]></printWhenExpression>
+					</reportElement>
+					<imageExpression><![CDATA[$P{ATTACHMENT_PATH} + $P{STOCK_MOVE_INFO}.get("LogoPath")]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="0" y="0" width="435" height="15" uuid="f8eca44e-5e09-4dbb-ba22-56c0e2ca60f5">
+						<printWhenExpression><![CDATA[(int)$P{STOCK_MOVE_INFO}.get("LogoPosition") == 3]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Left" markup="html">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{STOCK_MOVE_INFO}.get("PrintingSettingsHeader"))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" x="120" y="0" width="435" height="15" uuid="9079d0f8-619c-4128-aa97-6dc0c43c3a0a">
+						<printWhenExpression><![CDATA[(int)$P{STOCK_MOVE_INFO}.get("LogoPosition") == 1]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Left" markup="html">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{STOCK_MOVE_INFO}.get("PrintingSettingsHeader"))]]></textFieldExpression>
+				</textField>
+			</frame>
+			<line>
+				<reportElement positionType="Float" x="0" y="48" width="555" height="1" uuid="b8443b52-2200-4aea-aef3-5f0e1fb31ea4"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
+			<textField>
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="0" y="0" width="80" height="20" uuid="9b5acae8-8428-432e-87c8-ba313a9c26f0">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{STOCK_MOVE_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{StockMove.productCode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="80" y="0" width="394" height="20" uuid="6949777b-5a85-48d8-8bb5-3eb2e299d800">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{STOCK_MOVE_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[(boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers") == false]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{StockMove.productName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="394" y="0" width="80" height="20" uuid="57fe526e-ac4c-463a-b3d1-c1b544795f1b">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{STOCK_MOVE_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[(boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers")]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{StockMove.qtyUnitTitle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="474" y="0" width="80" height="20" uuid="82797ff0-903d-49c3-91c7-1ffcbf7a6525">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{STOCK_MOVE_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[(boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers") == false]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{StockMove.qtyUnitTitle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="80" y="0" width="314" height="20" uuid="26ce6196-cd81-4d86-be51-53f3aa45789a">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{STOCK_MOVE_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[(boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers")]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{StockMove.productName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="ElementGroupBottom" mode="Opaque" x="474" y="0" width="80" height="20" uuid="12280826-6086-46fa-ac51-482bd57a90c1">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$P{STOCK_MOVE_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					<printWhenExpression><![CDATA[(boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers")]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{StockMove.trackingNumberColTitle}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Prevent">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="80" height="15" uuid="bf7ead0a-d125-4a02-b6be-c1d5c7d7c8b7">
+					<propertyExpression name="net.sf.jasperreports.style.fontSize"><![CDATA[$F{productCode}.length() <= 17 ? "8" : "7"]]></propertyExpression>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" rightPadding="2">
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productCode}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="474" y="0" width="80" height="15" uuid="8d2efc38-43bf-4602-a730-5a4c8c96c555">
+					<propertyExpression name="net.sf.jasperreports.style.fontSize"><![CDATA[$F{productCode}.length() <= 17 ? "8" : "7"]]></propertyExpression>
+					<printWhenExpression><![CDATA[(boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers")]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" rightPadding="2">
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{trackingNumbers}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="80" y="0" width="314" height="15" uuid="c3e00bba-250f-482b-9de7-3d04e011f01c">
+					<propertyExpression name="net.sf.jasperreports.style.fontSize"><![CDATA[$F{productCode}.length() <= 17 ? "8" : "7"]]></propertyExpression>
+					<printWhenExpression><![CDATA[(boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers")]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" rightPadding="2">
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="80" y="0" width="394" height="15" uuid="05a5ce13-5622-4e54-b978-dcb01fda7b9d">
+					<propertyExpression name="net.sf.jasperreports.style.fontSize"><![CDATA[$F{productCode}.length() <= 17 ? "8" : "7"]]></propertyExpression>
+					<printWhenExpression><![CDATA[$F{isTitleLine} == false && (boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers") == false]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" rightPadding="2">
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="ContainerBottom" x="394" y="0" width="80" height="15" uuid="fb8db79e-f327-4a05-871b-18e89cf23ba4">
+					<printWhenExpression><![CDATA[$F{isTitleLine} == false && (boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers")]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" rightPadding="2">
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[msg($R{StockMove.qtyUnitDetails}, $F{quantity}, $F{unitCode} == null ? "" : $F{unitCode})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="ContainerBottom" x="474" y="0" width="80" height="15" uuid="155007a4-4519-47ab-92a0-af0e34c2ddfa">
+					<printWhenExpression><![CDATA[$F{isTitleLine} == false && (boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers") == false]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" rightPadding="2">
+					<topPen lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[msg($R{StockMove.qtyUnitDetails}, $F{quantity}, $F{unitCode} == null ? "" : $F{unitCode})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement positionType="Float" x="445" y="6" width="45" height="15" uuid="a5847618-bfb3-42d1-92b0-0cb0833e385a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement positionType="Float" x="490" y="6" width="27" height="15" uuid="d3279c54-b25c-44fc-a481-f6fa70017aa6"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["/" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="6" width="445" height="15" uuid="41ff2868-9930-45f1-bd35-47255700c116"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{STOCK_MOVE_INFO}.get("PrintingSettingsFooter"))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="1" isRemoveLineWhenBlank="true" uuid="34087893-3d4b-4cb9-b81f-94b323b7037d">
+					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{STOCK_MOVE_INFO}.get("SpecificNotes")) == false]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("SpecificNotes")]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="0" y="3" width="555" height="1" uuid="f2856c18-3fcf-4f3f-8a69-d8f9730923be"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<componentElement>
+				<reportElement x="517" y="6" width="37" height="15" uuid="7768a85f-8d1f-419e-902a-659a5c8da487"/>
+				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" margin="0" errorCorrectionLevel="M">
+					<jr:codeExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("StockMoveSeq")]]></jr:codeExpression>
+				</jr:QRCode>
+			</componentElement>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="35" splitType="Immediate">
+			<frame>
+				<reportElement positionType="Float" x="0" y="0" width="555" height="35" isRemoveLineWhenBlank="true" uuid="fe3edc75-0731-4100-871f-8d1ebdf91222">
+					<printWhenExpression><![CDATA[com.axelor.common.StringUtils.isBlank((String)$P{STOCK_MOVE_INFO}.get("Note")) == false]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="5"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="555" height="15" uuid="f6d21959-3626-4d2f-85af-1dc5260f270b">
+						<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[(String)$P{STOCK_MOVE_INFO}.get("PrimaryBackgroundColor")]]></propertyExpression>
+					</reportElement>
+					<box topPadding="2" bottomPadding="2"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{StockMove.note}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="0" y="15" width="555" height="15" isRemoveLineWhenBlank="true" uuid="1bf34a74-9c62-4c26-8706-3f67bc427b38"/>
+					<textElement markup="html"/>
+					<textFieldExpression><![CDATA[com.axelor.apps.report.engine.jasper.JasperUtils.htmlFix((String)$P{STOCK_MOVE_INFO}.get("Note"))]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</summary>
+</jasperReport>
