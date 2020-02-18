@@ -158,4 +158,24 @@ public interface ITranslation {
   public static final String CONFORMITY_LOT_NO_REF = /*$$(*/ "ConformityCertificate.lotNoRef"; /*)*/
   public static final String CONFORMITY_EXTERNAL_REFERENCE = /*$$(*/
       "ConformityCertificate.externalReference"; /*)*/
+
+  // Jasper stock move
+  public static final String COMPANY_CUSTOMER_TITLE = /*$$(*/ "StockMove.companyCustomerTitle"; /*)*/
+  public static final String COMPANY_INTERNAL_TITLE = /*$$(*/ "StockMove.companyInternalTitle"; /*)*/
+  public static final String DELIVERY_ORDER_TITLE = /*$$(*/ "StockMove.deliveryOrderTitle"; /*)*/
+  public static final String INTERNAL_MOVE_TITLE = /*$$(*/ "StockMove.internalMoveTitle"; /*)*/
+  public static final String INVOICING_ADDRESS_TITLE = /*$$(*/ "StockMove.invoicingAddressTitle"; /*)*/
+  public static final String NOTE = /*$$(*/ "StockMove.note"; /*)*/
+  public static final String ORIGIN_EXTERNAL_REFERENCE_TITLE = /*$$(*/ "StockMove.originExternalReferenceTitle"; /*)*/
+  public static final String ORIGIN_INTERNAL_REFERENCE_TITLE = /*$$(*/ "StockMove.originInternalReferenceTitle"; /*)*/
+  public static final String PRODUCT_CODE = /*$$(*/ "StockMove.productCode"; /*)*/
+  public static final String PRODUCT_NAME = /*$$(*/ "StockMove.productName"; /*)*/
+  public static final String QTY_UNIT_DETAILS = /*$$(*/ "StockMove.qtyUnitDetails"; /*)*/
+  public static final String QTY_UNIT_TITLE = /*$$(*/ "StockMove.qtyUnitTitle"; /*)*/
+  public static final String RECEIPT_DATE_TITLE = /*$$(*/ "StockMove.receiptDateTitle"; /*)*/
+  public static final String RECEPTION_ORDER_TITLE = /*$$(*/ "StockMove.receptionOrderTitle"; /*)*/
+  public static final String RETURN_ADDRESS_TITLE = /*$$(*/ "StockMove.returnAddressTitle"; /*)*/
+  public static final String SHIPPING_DATE_TITLE = /*$$(*/ "StockMove.shippingDateTitle"; /*)*/
+  public static final String TRACKING_NUMBER_COL_TITLE = /*$$(*/ "StockMove.trackingNumberColTitle"; /*)*/
+
 }

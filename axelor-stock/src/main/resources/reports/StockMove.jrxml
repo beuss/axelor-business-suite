@@ -351,10 +351,6 @@ msg($R{StockMove.individualCustomerTitle}, $P{REPORT_RESOURCE_BUNDLE}.getString(
 					</textElement>
 					<textFieldExpression><![CDATA[$P{STOCK_MOVE_INFO}.get("InvoicingAddress")]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement x="280" y="55" width="100" height="30" uuid="6dc0eae8-a837-483f-af58-417f03c18c22"/>
-					<textFieldExpression><![CDATA[(boolean)$P{STOCK_MOVE_INFO}.get("DisplayTrackingNumbers")]]></textFieldExpression>
-				</textField>
 			</frame>
 			<frame>
 				<reportElement x="0" y="0" width="555" height="30" isRemoveLineWhenBlank="true" uuid="a07dcdda-d995-44e8-808f-b811b50502a5">
